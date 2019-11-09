@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios';
 import {constants} from '../common';
+import firebase from '../firebase';
 
 class UpdatePeople extends Component {
 
@@ -11,6 +12,8 @@ class UpdatePeople extends Component {
           this.onButtonDepartureChange = this.onButtonDepartureChange.bind(this);
           this.onButtonMealChange = this.onButtonMealChange.bind(this);
           this.onSubmit = this.onSubmit.bind(this);
+
+          this.ref = firebase.firestore().collection('peoples');
 
           this.state = {
               id : '',

@@ -1,29 +1,34 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
 import {constants} from '../common';
+import firebase from '../firebase';
 
 class People extends Component {
                 constructor(props) {
                   super(props);
-                  this.state = { peoples: [] };
+
+                  this.ref = firebase.firestore().collection('peoples');
+
+                  this.state = { peoples: new Array() };
                 }
 
                 componentDidMount() {
-                    fetch(constants.apiUrl + '/people/')
-                    .then(res => res.json())
-                    .then((data) => {
-                        this.setState({ peoples: data })
-                    })
-                    .catch(console.log)
-                }
 
-                componentDidUpdate() {
-                    fetch(constants.apiUrl + '/people/')
-                    .then(res => res.json())
-                    .then((data) => {
-                        this.setState({ peoples: data })
-                    })
-                    .catch(console.log)
+                    var newPeople = [];
+
+                    this.ref.get()
+                    .then(function(querySnapshot) {
+                        querySnapshot.forEach(function(doc) {
+                            // doc.data() is never undefined for query doc snapshots
+                            newPeople.push(doc.data());
+                            console.log(doc.id, " => ", doc.data());
+                        });
+                    });
+
+                    this.setState({
+                                        peoples: newPeople
+                    });
+
                 }
 
                 render() {

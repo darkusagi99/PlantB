@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import axios from 'axios';
 import {constants} from '../common';
+import firebase from '../firebase';
 
 class CreatePeople extends Component {
 
@@ -12,6 +12,8 @@ class CreatePeople extends Component {
           this.onButtonDepartureChange = this.onButtonDepartureChange.bind(this);
           this.onButtonMealChange = this.onButtonMealChange.bind(this);
           this.onSubmit = this.onSubmit.bind(this);
+
+          this.ref = firebase.firestore().collection('peoples');
 
           this.state = {
               fullname : '',
@@ -71,9 +73,19 @@ class CreatePeople extends Component {
                     standardDeparture:  Array.from( this.state.standardDeparture.keys()),
                     standardMeal: Array.from( this.state.standardMeal.keys())
                   };
-                  axios.put(constants.apiUrl + '/people/', obj)
-                      .then(res => console.log(res.data), this.props.history.push(`/people/list`))
-                      .catch(error => {console.log(error);});
+
+              this.ref.add({
+                       fullname: this.state.fullname,
+                       standardArrival: Array.from( this.state.standardArrival.keys()),
+                       standardDeparture:  Array.from( this.state.standardDeparture.keys()),
+                       standardMeal: Array.from( this.state.standardMeal.keys())
+                     })
+                    .then((docRef) => {
+                        this.props.history.push("/people/list")
+                    })
+                    .catch((error) => {
+                        console.error("Error adding document: ", error);
+                    });
 
               this.setState({
                     fullname: '',
