@@ -141,14 +141,14 @@ class CreatePresence extends Component {
         render() {
             return (
                 <div style={{marginTop: 10}}>
-                    <h3>Creation Presence</h3>
+                    <h3>Creation Présence</h3>
                     <form onSubmit={this.onSubmit}>
                         <div class="input-group mb-3">
                           <div class="input-group-prepend">
-                            <label class="input-group-text" for="inputGroupPerson">Eleve</label>
+                            <label class="input-group-text" for="inputGroupPerson">élève</label>
                           </div>
                           <select class="custom-select" id="inputGroupPerson" onChange={this.handlePersonChange}>
-                            <option value="">Choose...</option>
+                            <option value="">Choisir...</option>
                             {this.state.peoples.map((people) => (
                                 <option value={people.id} key={people.id}>{people.fullname}</option>
                              ))}
@@ -177,7 +177,7 @@ class CreatePresence extends Component {
                                     <KeyboardTimePicker
                                       margin="normal"
                                       id="time-picker"
-                                      label="Arrive"
+                                      label="Arrivée"
                                       ampm={false}
                                       value={this.state.arrivalTime}
                                       onChange={this.handleArrivalChange}
@@ -192,7 +192,7 @@ class CreatePresence extends Component {
                                     <KeyboardTimePicker
                                       margin="normal"
                                       id="time-picker"
-                                      label="Depart"
+                                      label="Départ"
                                       ampm={false}
                                       value={this.state.depatureTime}
                                       onChange={this.handleDepartureChange}
@@ -208,7 +208,7 @@ class CreatePresence extends Component {
                             </div>
                         </div>
                         <div className="form-group">
-                            <input type="submit" value="Save" className="btn btn-primary"/>
+                            <input type="submit" value="Enregistrer" className="btn btn-primary"/>
                         </div>
                     </form>
                 </div>

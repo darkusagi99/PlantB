@@ -99,7 +99,7 @@ class CreatePeople extends Component {
         render() {
             return (
                 <div style={{marginTop: 10}}>
-                    <h3>Creation Eleve</h3>
+                    <h3>Création élève</h3>
                     <form onSubmit={this.onSubmit}>
                         <div className="form-group">
                             <label>Nom:  </label>
@@ -136,7 +136,7 @@ class CreatePeople extends Component {
                             </div>
                         </div>
                         <div className="form-group">
-                            <input type="submit" value="Save" className="btn btn-primary"/>
+                            <input type="submit" value="Enregistrer" className="btn btn-primary"/>
                         </div>
                     </form>
                 </div>

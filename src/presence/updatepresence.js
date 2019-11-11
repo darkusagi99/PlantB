@@ -138,11 +138,11 @@ class UpdatePresence extends Component {
         render() {
             return (
                 <div style={{marginTop: 10}}>
-                    <h3>Maj Presence</h3>
+                    <h3>MàJ Présence</h3>
                     <form onSubmit={this.onSubmit}>
                         <div class="input-group mb-3">
                           <div class="input-group-prepend">
-                            <label class="input-group-text" for="inputGroupPerson">Eleve</label>
+                            <label class="input-group-text" for="inputGroupPerson">élève</label>
                           </div>
                           <select class="custom-select" id="inputGroupPerson" value={this.state.personId} onChange={this.handlePersonChange}>
                             {this.state.peoples.map((people) => (
@@ -204,7 +204,7 @@ class UpdatePresence extends Component {
                             </div>
                         </div>
                         <div className="form-group">
-                            <input type="submit" value="Save" className="btn btn-primary"/>
+                            <input type="submit" value="Enregistrer" className="btn btn-primary"/>
                         </div>
                     </form>
                 </div>

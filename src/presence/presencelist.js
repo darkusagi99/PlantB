@@ -72,10 +72,10 @@ class Presence extends Component {
         render() {
             return (
                 <div>
-                    <center><h1>Presence</h1></center>
+                    <center><h1>Présences</h1></center>
 
                     <div>
-                        <Link to={'/presence/create'} className="nav-link">Create Presence</Link>
+                        <Link to={'/presence/create'} className="nav-link">Création Présence</Link>
                     </div>
 
                      <table class="table">
@@ -83,8 +83,8 @@ class Presence extends Component {
                          <tr>
                                <th scope="col">Nom</th>
                                <th scope="col">Jour</th>
-                               <th scope="col">Arrive</th>
-                               <th scope="col">Depart</th>
+                               <th scope="col">Arrivé</th>
+                               <th scope="col">Départ</th>
                                <th scope="col">Repas</th>
                                <th scope="col">&nbsp;</th>
                          </tr>
@@ -98,7 +98,7 @@ class Presence extends Component {
                              <td>{presence.departure ? (this.displayFormatedTime(presence.departure)) : ("-")}</td>
                              <td>{presence.hasMeal ? ("Avec Repas") : ("Sans Repas")}</td>
 
-                             <td><Link to={'/presence/update/' + presence.id} className="nav-link">Update Presence</Link></td>
+                             <td><Link to={'/presence/update/' + presence.id} className="nav-link">MàJ Présence</Link></td>
                          </tr>
                      ))}
                      </tbody>

@@ -86,13 +86,13 @@ class ReportPresence extends Component {
         render() {
             return (
                 <div style={{marginTop: 10}}>
-                    <h3>Month Report</h3>
+                    <h3>Rapport Mensuel</h3>
 
                         <table class="table">
                         <thead>
                              <tr>
 
-                                 <th>Peoples</th>
+                                 <th>Elève</th>
                                  {this.getDaysInMonth().map((dayInMonth) => (
                                     <th>{dayInMonth.getDate()}</th>
                                  ))}
@@ -114,7 +114,7 @@ class ReportPresence extends Component {
                                                         {presence.arrival ? (this.displayFormatedTime(presence.arrival)) : ("-")}-{presence.departure ? (this.displayFormatedTime(presence.departure)) : ("-")}
                                                         <br />{presence.hasMeal ? ("Avec Repas") : ("Sans Repas")}
 
-                                                        <br /><Link to={'/presence/update/' + presence.id} className="nav-link">Update</Link>
+                                                        <br /><Link to={'/presence/update/' + presence.id} className="nav-link">MàJ</Link>
                                                     </p>
                                                 )
                                             )}

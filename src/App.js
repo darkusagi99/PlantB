@@ -49,15 +49,16 @@ class App extends Component {
                               <div className="collapse navbar-collapse" id="navbarSupportedContent">
                                 <ul className="navbar-nav mr-auto">
                                   <li className="nav-item">
-                                    <Link to={'/people/list'} className="nav-link">Eleves</Link>
+                                    <Link to={'/people/list'} className="nav-link">Elèves</Link>
                                   </li>
                                   <li className="nav-item">
-                                    <Link to={'/presence/list'} className="nav-link">Presences</Link>
+                                    <Link to={'/presence/list'} className="nav-link">Présences</Link>
                                   </li>
                                   <li className="nav-item">
                                     <Link to={'/report/month'} className="nav-link">Rapport mensuel</Link>
                                   </li>
                                 </ul>
+                                <span class="badge badge-pill badge-secondary">v1.1</span>
                                 <button  class="btn btn-secondary" onClick={signOut}>Deconnecter</button>
                               </div>
                             </nav> <br/>
@@ -72,7 +73,7 @@ class App extends Component {
                                 <Route path='/' component={ CreateFastPresence } />
                             </Switch>
                           </div>
-                        </Router>
+                    </Router>
                 </div>
             :
              <div className="App">

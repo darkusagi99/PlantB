@@ -4,13 +4,15 @@ import {constants} from '../common';
 import firebase from '../firebase';
 
 class People extends Component {
-                constructor(props) {
-                  super(props);
+    constructor(props) {
 
-                  this.ref = firebase.firestore().collection('peoples');
+        super(props);
 
-                  this.state = { peoples: new Array() };
-                }
+        this.affichageJours = this.affichageJours.bind(this);
+
+        this.ref = firebase.firestore().collection('peoples');
+        this.state = { peoples: new Array() };
+    }
 
                 componentDidMount() {
 
@@ -36,13 +38,44 @@ class People extends Component {
 
                 }
 
+                affichageJours(listJours) {
+
+                    var listeRetour = '';
+
+                    listJours.forEach(
+                        function(element) {
+                            var elementTxt = element;
+
+                            switch (element) {
+                              case 'MONDAY':
+                                elementTxt = 'Lundi';
+                                break;
+                              case 'TUESDAY':
+                                elementTxt = 'Mardi';
+                                break;
+                              case 'THURSDAY':
+                                elementTxt = 'Jeudi';
+                                break;
+                              case 'FRIDAY':
+                                elementTxt = 'Vendredi';
+                                break;
+                            }
+
+
+                            listeRetour = listeRetour + ' ' + elementTxt;
+                        }
+                    );
+
+                    return listeRetour;
+                }
+
                 render() {
                     return (
                         <div>
-                            <center><h1>Eleves</h1></center>
+                            <center><h1>Elèves</h1></center>
 
                             <div>
-                                <Link to={'/people/create'} className="nav-link">Ajouter Eleve</Link>
+                                <Link to={'/people/create'} className="nav-link">Ajouter élève</Link>
                             </div>
 
                             <table class="table">
@@ -59,10 +92,10 @@ class People extends Component {
                                     {this.state.peoples.map((people) => (
                                         <tr key={people.id}>
                                             <td>{people.fullname}</td>
-                                            <td>Matin : {people.standardArrival.join(' ')}</td>
-                                            <td>Soir : {people.standardDeparture.join(' ')}</td>
-                                            <td>Repas : {people.standardMeal.join(' ')}</td>
-                                            <td><Link to={'/people/update/' + people.id} className="nav-link">Maj Eleve</Link></td>
+                                            <td>Matin : {this.affichageJours(people.standardArrival)}</td>
+                                            <td>Soir : {this.affichageJours(people.standardDeparture)}</td>
+                                            <td>Repas : {this.affichageJours(people.standardMeal)}</td>
+                                            <td><Link to={'/people/update/' + people.id} className="nav-link">MàJ élève</Link></td>
                                         </tr>
                                     ))}
                                 </tbody>
