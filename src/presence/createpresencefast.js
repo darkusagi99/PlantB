@@ -136,6 +136,7 @@ class CreateFastPresence extends Component {
 
 
                                     currentData.hasMeal ? that.refs.hasMeal.classList.add('active') : that.refs.hasMeal.classList.remove('active') ;
+                                    currentData.hasMeal ? that.refs.hasMeal.innerHTML = "Avec Repas" : that.refs.hasMeal.innerHTML = "Sans Repas" ;
 
                                     console.log(doc.id, " => ", doc.data());
 
@@ -168,10 +169,17 @@ class CreateFastPresence extends Component {
               }
 
               handleMealChange(e) {
-                        const item = e.target.value;
-                        e.target.classList.toggle('active');
-                        const active = e.target.classList.contains('active');
-                        this.state.hasMeal = active;
+                    const item = e.target.value;
+                    e.target.classList.toggle('active');
+                    const active = e.target.classList.contains('active');
+                    this.state.hasMeal = active;
+
+
+                    if (active) {
+                        e.target.innerHTML = "Avec Repas";
+                    }  else {
+                        e.target.innerHTML = "Sans Repas";
+                    }
               }
 
               onSubmit(e) {
@@ -231,7 +239,7 @@ class CreateFastPresence extends Component {
                                   </div>
                                   <select class="custom-select" id="inputGroupPerson" value={this.state.personId} onChange={this.handlePersonChange}>
 
-                                    <option selected>Choose...</option>
+                                    <option selected>Choix...</option>
                                     {this.state.peoples.map((people) => (
                                         <option value={people.id} >{people.fullname}</option>
                                      ))}
@@ -272,7 +280,7 @@ class CreateFastPresence extends Component {
                                 </div>
                                 <div className="form-group">
                                     <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                                        <button type="button" class="btn btn-secondary" onClick={this.handleMealChange} ref="hasMeal">Repas</button>
+                                        <button type="button" class="btn btn-secondary" onClick={this.handleMealChange} ref="hasMeal">Sans Repas</button>
                                     </div>
                                 </div>
                                 <div className="form-group">

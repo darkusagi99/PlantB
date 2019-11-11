@@ -59,6 +59,7 @@ class UpdatePresence extends Component {
                 });
 
                 currentData.hasMeal ? that.refs.hasMeal.classList.add('active') : that.refs.hasMeal.classList.remove('active') ;
+                currentData.hasMeal ? that.refs.hasMeal.innerHTML = "Avec Repas" : that.refs.hasMeal.innerHTML = "Sans Repas" ;
 
                 console.log(doc.id, " => ", doc.data());
             });
@@ -115,6 +116,12 @@ class UpdatePresence extends Component {
                 e.target.classList.toggle('active');
                 const active = e.target.classList.contains('active');
                 this.state.hasMeal = active;
+
+                if (active) {
+                    e.target.innerHTML = "Avec Repas";
+                }  else {
+                    e.target.innerHTML = "Sans Repas";
+                }
       }
 
       onSubmit(e) {

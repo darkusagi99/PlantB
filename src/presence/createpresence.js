@@ -106,10 +106,15 @@ class CreatePresence extends Component {
       }
 
       handleMealChange(e) {
-                const item = e.target.value;
                 e.target.classList.toggle('active');
                 const active = e.target.classList.contains('active');
                 this.state.hasMeal = active;
+
+                if (active) {
+                    e.target.innerHTML = "Avec Repas";
+                }  else {
+                    e.target.innerHTML = "Sans Repas";
+                }
       }
 
       onSubmit(e) {
@@ -204,7 +209,7 @@ class CreatePresence extends Component {
                         </div>
                         <div className="form-group">
                             <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                                <button type="button" class="btn btn-secondary" onClick={this.handleMealChange} >Repas</button>
+                                <button type="button" class="btn btn-secondary" onClick={this.handleMealChange} >Sans Repas</button>
                             </div>
                         </div>
                         <div className="form-group">
