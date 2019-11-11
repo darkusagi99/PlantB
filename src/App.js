@@ -6,8 +6,6 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import People from './people/peoplelist';
 import UpdatePeople from './people/updatepeople';
 import Presence from './presence/presencelist';
-import CreatePresence from './presence/createpresence';
-import UpdatePresence from './presence/updatepresence';
 import CreateFastPresence from './presence/createpresencefast';
 import ReportPresence from './report/monthreport';
 import logo from './logo.svg';
