@@ -4,7 +4,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 import People from './people/peoplelist';
-import CreatePeople from './people/createpeople';
 import UpdatePeople from './people/updatepeople';
 import Presence from './presence/presencelist';
 import CreatePresence from './presence/createpresence';

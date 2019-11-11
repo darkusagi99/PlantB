@@ -64,16 +64,19 @@ class UpdatePeople extends Component {
 
       /** Méthode permettznt de gérer les changements du niveau des boutons - A mutualiser */
       onButtonArrivalChange(e) {
+            const item = e.target.value;
             e.target.classList.toggle('active');
             const active = e.target.classList.contains('active');
             this.state.standardArrival.set(item, active);
       }
       onButtonDepartureChange(e) {
+            const item = e.target.value;
             e.target.classList.toggle('active');
             const active = e.target.classList.contains('active');
             this.state.standardDeparture.set(item, active);
       }
       onButtonMealChange(e) {
+            const item = e.target.value;
             e.target.classList.toggle('active');
             const active = e.target.classList.contains('active');
             this.state.standardMeal.set(item, active);
