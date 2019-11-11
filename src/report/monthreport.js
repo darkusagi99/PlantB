@@ -112,7 +112,7 @@ class ReportPresence extends Component {
                                             .map((presence) => (
                                                     <p>
                                                         {presence.arrival ? (this.displayFormatedTime(presence.arrival)) : ("-")}-{presence.departure ? (this.displayFormatedTime(presence.departure)) : ("-")}
-                                                        <br />{presence.hasMeal ? ("With Meal") : ("Without Meal")}
+                                                        <br />{presence.hasMeal ? ("Avec Repas") : ("Sans Repas")}
 
                                                         <br /><Link to={'/presence/update/' + presence.id} className="nav-link">Update</Link>
                                                     </p>

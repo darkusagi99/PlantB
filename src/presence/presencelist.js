@@ -96,7 +96,7 @@ class Presence extends Component {
                              <td>{presence.presenceDay ? (this.displayFormatedDate(presence.presenceDay)) : ("-")}</td>
                              <td>{presence.arrival ? (this.displayFormatedTime(presence.arrival)) : ("-")}</td>
                              <td>{presence.departure ? (this.displayFormatedTime(presence.departure)) : ("-")}</td>
-                             <td>{presence.hasMeal ? ("Avec Meal") : ("Sans Meal")}</td>
+                             <td>{presence.hasMeal ? ("Avec Repas") : ("Sans Repas")}</td>
 
                              <td><Link to={'/presence/update/' + presence.id} className="nav-link">Update Presence</Link></td>
                          </tr>
