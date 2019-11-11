@@ -9,6 +9,7 @@ import {
 } from '@material-ui/pickers';
 import axios from 'axios';
 import {constants} from '../common';
+import firebase from '../firebase';
 
 class UpdatePresence extends Component {
 
@@ -20,6 +21,9 @@ class UpdatePresence extends Component {
           this.handleDepartureChange = this.handleDepartureChange.bind(this);
           this.handleMealChange = this.handleMealChange.bind(this);
           this.onSubmit = this.onSubmit.bind(this);
+
+          this.peopleRef = firebase.firestore().collection('peoples');
+          this.presenceRef = firebase.firestore().collection('presences');
 
           this.state = {
               presenceId : '',
@@ -36,30 +40,47 @@ class UpdatePresence extends Component {
 
         componentDidMount() {
 
-            // Chargement liste personnes
-            fetch(constants.apiUrl + '/people/')
-            .then(res => res.json())
-            .then((data) => {
-                this.setState({ peoples: data })
-            })
-            .catch(console.log)
+            var newPeople = [];
+            var that = this;
 
-            // Chargement presence à mettre à jour
-            fetch(constants.apiUrl + '/presence/' + this.props.match.params.id)
-            .then(res => res.json())
-            .then((data) => {
-                this.setState({
-                    personId: data.personId,
-                    previousPresence: data,
-                    selectedDate: data.presenceDay,
-                    arrivalTime: data.arrival,
-                    depatureTime: data.departure,
-                    hasMeal: data.hasMeal,
-                    presenceId: data.id
+            this.presenceRef.get()
+            .then(function(querySnapshotPres) {
+                    querySnapshotPres.forEach(function(doc) {
+                        // doc.data() is never undefined for query doc snapshots
+                        var currentData = doc.data();
+                        currentData.id = doc.id;
+
+                        that.setState({
+                            presenceId : doc.id,
+                            personId : currentData.personId,
+                            selectedDate : new Date(currentData.presenceDay.seconds*1000),
+                            arrivalTime : new Date(currentData.arrival.seconds*1000),
+                            depatureTime : new Date(currentData.departure.seconds*1000),
+                            hasMeal : currentData.hasMeal,
+                            previousPresence: ''
+                        });
+
+                        console.log(doc.id, " => ", doc.data());
+                    });
+            });
+
+
+            this.peopleRef.get()
+            .then(function(querySnapshot) {
+                querySnapshot.forEach(function(doc) {
+                    // doc.data() is never undefined for query doc snapshots
+                    var currentData = doc.data();
+                    currentData.id = doc.id;
+
+                    newPeople.push(currentData);
+
+                    that.setState({
+                        peoples: newPeople
+                    });
+
+                    console.log(doc.id, " => ", doc.data());
                 });
-                data.hasMeal ? this.refs.hasMeal.classList.add('active') : this.refs.hasMeal.classList.remove('active') ;
-            })
-            .catch(console.log)
+            });
 
 
         }

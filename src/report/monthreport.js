@@ -1,12 +1,16 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
 import {constants} from '../common';
+import firebase from '../firebase';
 
 class ReportPresence extends Component {
 
         constructor(props) {
 
                   super(props);
+
+                  this.peopleRef = firebase.firestore().collection('peoples');
+                  this.presenceRef = firebase.firestore().collection('presences');
 
                   this.state = {
                       presenceId : '',
@@ -17,27 +21,50 @@ class ReportPresence extends Component {
                       hasMeal : false,
                       peoples: [],
                       previousPresence: '',
-                      presences: [],
-                      peoples: []
+                      presences: []
                   }
 
         }
 
         componentDidMount() {
-                    fetch(constants.apiUrl + '/presence/')
-                    .then(res => res.json())
-                    .then((data) => {
-                        this.setState({ presences: data })
-                    })
-                    .catch(console.log)
+                    var newPeople = [];
+                    var newPresence = [];
+                    var that = this;
+
+                    this.presenceRef.get()
+                    .then(function(querySnapshot) {
+                        querySnapshot.forEach(function(doc) {
+                            // doc.data() is never undefined for query doc snapshots
+                            var currentData = doc.data();
+                            currentData.id = doc.id;
+
+                            newPresence.push(currentData);
+
+                            that.setState({
+                                presences : newPresence
+                            });
+
+                            console.log(doc.id, " => ", doc.data());
+                        });
+                    });
 
 
-                    fetch(constants.apiUrl + '/people/')
-                    .then(res => res.json())
-                    .then((data) => {
-                        this.setState({ peoples: data })
-                    })
-                    .catch(console.log)
+                    this.peopleRef.get()
+                    .then(function(querySnapshot) {
+                        querySnapshot.forEach(function(doc) {
+                            // doc.data() is never undefined for query doc snapshots
+                            var currentData = doc.data();
+                            currentData.id = doc.id;
+
+                            newPeople.push(currentData);
+
+                            that.setState({
+                                peoples: newPeople
+                            });
+
+                            console.log(doc.id, " => ", doc.data());
+                        });
+                    });
 
         }
 

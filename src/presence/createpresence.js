@@ -7,13 +7,16 @@ import {
   KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-import axios from 'axios';
 import {constants} from '../common';
+import firebase from '../firebase';
 
 class CreatePresence extends Component {
 
         constructor(props) {
           super(props);
+
+          var newPeople = [];
+
           this.handlePersonChange = this.handlePersonChange.bind(this);
           this.handleDateChange = this.handleDateChange.bind(this);
           this.handleArrivalChange = this.handleArrivalChange.bind(this);
@@ -21,26 +24,44 @@ class CreatePresence extends Component {
           this.handleMealChange = this.handleMealChange.bind(this);
           this.onSubmit = this.onSubmit.bind(this);
 
+
+          this.peopleRef = firebase.firestore().collection('peoples');
+          this.presenceRef = firebase.firestore().collection('presences');
+
+
           this.state = {
               personId : '',
               selectedDate : new Date(),
               arrivalTime : new Date(),
               depatureTime : new Date(),
               hasMeal : false,
-              peoples: []
+              peoples: newPeople
           }
         }
 
 
         componentDidMount() {
 
+            var newPeople = [];
+            var that = this;
+
             // Chargement liste personnes
-            fetch(constants.apiUrl + '/people/')
-            .then(res => res.json())
-            .then((data) => {
-                this.setState({ peoples: data })
-            })
-            .catch(console.log)
+            this.peopleRef.get()
+            .then(function(querySnapshot) {
+              querySnapshot.forEach(function(doc) {
+                  // doc.data() is never undefined for query doc snapshots
+                  var currentData = doc.data();
+                  currentData.id = doc.id;
+
+                  newPeople.push(currentData);
+
+                  that.setState({
+                    peoples: newPeople
+                  });
+
+                  console.log(doc.id, " => ", doc.data());
+              });
+            });
 
             // Initialisation des heures
             this.state.arrivalTime.setHours(7);
@@ -88,16 +109,19 @@ class CreatePresence extends Component {
       onSubmit(e) {
                     e.preventDefault();
 
-                    const obj = {
-                            personId : this.state.personId,
-                            presenceDay : this.state.selectedDate,
-                            arrival : this.state.arrivalTime,
-                            departure : this.state.depatureTime,
-                            hasMeal : this.state.hasMeal
-                        };
-                        axios.put(constants.apiUrl + '/presence/', obj)
-                            .then(res => console.log(res.data), this.props.history.push(`/presence/list`))
-                            .catch(error => {console.log(error);});
+                    this.presenceRef.add({
+                        personId : this.state.personId,
+                        presenceDay : this.state.selectedDate,
+                        arrival : this.state.arrivalTime,
+                        departure : this.state.depatureTime,
+                        hasMeal : this.state.hasMeal
+                    })
+                    .then((docRef) => {
+                        this.props.history.push("/presence/list")
+                    })
+                    .catch((error) => {
+                        console.error("Error adding document: ", error);
+                    });
 
                     this.setState({
                             personId : '',
@@ -118,9 +142,9 @@ class CreatePresence extends Component {
                             <label class="input-group-text" for="inputGroupPerson">Person</label>
                           </div>
                           <select class="custom-select" id="inputGroupPerson" onChange={this.handlePersonChange}>
-                            <option selected>Choose...</option>
+                            <option value="">Choose...</option>
                             {this.state.peoples.map((people) => (
-                                <option value={people.id}>{people.fullname}</option>
+                                <option value={people.id} key={people.id}>{people.fullname}</option>
                              ))}
                           </select>
                         </div>

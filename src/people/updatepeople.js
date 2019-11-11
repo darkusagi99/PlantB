@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import axios from 'axios';
 import {constants} from '../common';
 import firebase from '../firebase';
 
@@ -13,7 +12,7 @@ class UpdatePeople extends Component {
           this.onButtonMealChange = this.onButtonMealChange.bind(this);
           this.onSubmit = this.onSubmit.bind(this);
 
-          this.ref = firebase.firestore().collection('peoples');
+          this.ref = firebase.firestore().collection('peoples').doc(this.props.match.params.id);
 
           this.state = {
               id : '',
@@ -26,30 +25,29 @@ class UpdatePeople extends Component {
       }
 
 
-        componentDidMount() {
-            fetch(constants.apiUrl + '/people/' + this.props.match.params.id)
-            .then(res => res.json())
-            .then((data) => {
+      componentDidMount() {
+            this.ref.get()
+            .then((doc) => {
                 this.setState({
-                    previousPeople: data,
-                    id : data.id,
-                    fullname : data.fullname,
-                    standardArrival : new Map(data.standardArrival.map(i => [i, true])),
-                    standardDeparture : new Map(data.standardDeparture.map(i => [i, true])),
-                    standardMeal : new Map(data.standardMeal.map(i => [i, true]))
+                    previousPeople: doc.data(),
+                    id : doc.id,
+                    fullname : doc.data().fullname,
+                    standardArrival : new Map(doc.data().standardArrival.map(i => [i, true])),
+                    standardDeparture : new Map(doc.data().standardDeparture.map(i => [i, true])),
+                    standardMeal : new Map(doc.data().standardMeal.map(i => [i, true]))
                  });
-                 data.standardArrival.includes("MONDAY") ? this.refs.arrivalMonday.classList.add('active') : this.refs.arrivalMonday.classList.remove('active') ;
-                 data.standardArrival.includes("TUESDAY") ? this.refs.arrivalTuesday.classList.add('active') : this.refs.arrivalTuesday.classList.remove('active') ;
-                 data.standardArrival.includes("THURSDAY") ? this.refs.arrivalThursday.classList.add('active') : this.refs.arrivalThursday.classList.remove('active') ;
-                 data.standardArrival.includes("FRIDAY") ? this.refs.arrivalFriday.classList.add('active') : this.refs.arrivalFriday.classList.remove('active') ;
-                 data.standardDeparture.includes("MONDAY") ? this.refs.leaveMonday.classList.add('active') : this.refs.leaveMonday.classList.remove('active') ;
-                 data.standardDeparture.includes("TUESDAY") ? this.refs.leaveTuesday.classList.add('active') : this.refs.leaveTuesday.classList.remove('active') ;
-                 data.standardDeparture.includes("THURSDAY") ? this.refs.leaveThursday.classList.add('active') : this.refs.leaveThursday.classList.remove('active') ;
-                 data.standardDeparture.includes("FRIDAY") ? this.refs.leaveFriday.classList.add('active') : this.refs.leaveFriday.classList.remove('active') ;
-                 data.standardMeal.includes("MONDAY") ? this.refs.mealMonday.classList.add('active') : this.refs.mealMonday.classList.remove('active') ;
-                 data.standardMeal.includes("TUESDAY") ? this.refs.mealTuesday.classList.add('active') : this.refs.mealTuesday.classList.remove('active') ;
-                 data.standardMeal.includes("THURSDAY") ? this.refs.mealThursday.classList.add('active') : this.refs.mealThursday.classList.remove('active') ;
-                 data.standardMeal.includes("FRIDAY") ? this.refs.mealFriday.classList.add('active') : this.refs.mealFriday.classList.remove('active') ;
+                 doc.data().standardArrival.includes("MONDAY") ? this.refs.arrivalMonday.classList.add('active') : this.refs.arrivalMonday.classList.remove('active') ;
+                 doc.data().standardArrival.includes("TUESDAY") ? this.refs.arrivalTuesday.classList.add('active') : this.refs.arrivalTuesday.classList.remove('active') ;
+                 doc.data().standardArrival.includes("THURSDAY") ? this.refs.arrivalThursday.classList.add('active') : this.refs.arrivalThursday.classList.remove('active') ;
+                 doc.data().standardArrival.includes("FRIDAY") ? this.refs.arrivalFriday.classList.add('active') : this.refs.arrivalFriday.classList.remove('active') ;
+                 doc.data().standardDeparture.includes("MONDAY") ? this.refs.leaveMonday.classList.add('active') : this.refs.leaveMonday.classList.remove('active') ;
+                 doc.data().standardDeparture.includes("TUESDAY") ? this.refs.leaveTuesday.classList.add('active') : this.refs.leaveTuesday.classList.remove('active') ;
+                 doc.data().standardDeparture.includes("THURSDAY") ? this.refs.leaveThursday.classList.add('active') : this.refs.leaveThursday.classList.remove('active') ;
+                 doc.data().standardDeparture.includes("FRIDAY") ? this.refs.leaveFriday.classList.add('active') : this.refs.leaveFriday.classList.remove('active') ;
+                 doc.data().standardMeal.includes("MONDAY") ? this.refs.mealMonday.classList.add('active') : this.refs.mealMonday.classList.remove('active') ;
+                 doc.data().standardMeal.includes("TUESDAY") ? this.refs.mealTuesday.classList.add('active') : this.refs.mealTuesday.classList.remove('active') ;
+                 doc.data().standardMeal.includes("THURSDAY") ? this.refs.mealThursday.classList.add('active') : this.refs.mealThursday.classList.remove('active') ;
+                 doc.data().standardMeal.includes("FRIDAY") ? this.refs.mealFriday.classList.add('active') : this.refs.mealFriday.classList.remove('active') ;
             })
             .catch(console.log)
         }
@@ -105,8 +103,8 @@ class UpdatePeople extends Component {
                     standardDeparture:  Array.from( this.state.standardDeparture.keys()),
                     standardMeal: Array.from( this.state.standardMeal.keys())
                   };
-                  axios.post(constants.apiUrl + '/people/', obj)
-                      .then(res => console.log(res.data), this.props.history.push(`/people/list`))
+                  this.ref.set(obj)
+                      .then(this.props.history.push(`/people/list`))
                       .catch(error => {console.log(error);});
 
               this.setState({

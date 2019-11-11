@@ -15,18 +15,23 @@ class People extends Component {
                 componentDidMount() {
 
                     var newPeople = [];
+                    var that = this;
 
                     this.ref.get()
                     .then(function(querySnapshot) {
                         querySnapshot.forEach(function(doc) {
                             // doc.data() is never undefined for query doc snapshots
-                            newPeople.push(doc.data());
+                            var currentData = doc.data();
+                            currentData.id = doc.id;
+
+                            newPeople.push(currentData);
+
+                            that.setState({
+                                peoples: newPeople
+                            });
+
                             console.log(doc.id, " => ", doc.data());
                         });
-                    });
-
-                    this.setState({
-                                        peoples: newPeople
                     });
 
                 }
@@ -52,7 +57,7 @@ class People extends Component {
                                 </thead>
                                 <tbody>
                                     {this.state.peoples.map((people) => (
-                                        <tr>
+                                        <tr key={people.id}>
                                             <td>{people.fullname}</td>
                                             <td>Morning : {people.standardArrival.join(' ')}</td>
                                             <td>Evening : {people.standardDeparture.join(' ')}</td>
