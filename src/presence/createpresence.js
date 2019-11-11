@@ -64,12 +64,18 @@ class CreatePresence extends Component {
             });
 
             // Initialisation des heures
+            this.state.selectedDate.setHours(0);
+            this.state.selectedDate.setMinutes(0);
+            this.state.selectedDate.setSeconds(0);
+            this.state.selectedDate.setMilliseconds(0);
             this.state.arrivalTime.setHours(7);
             this.state.arrivalTime.setMinutes(0);
             this.state.arrivalTime.setSeconds(0);
+            this.state.arrivalTime.setMilliseconds(0);
             this.state.depatureTime.setHours(16);
             this.state.depatureTime.setMinutes(30);
             this.state.arrivalTime.setSeconds(0);
+            this.state.arrivalTime.setMilliseconds(0);
 
         }
 

@@ -9,6 +9,7 @@ import {
 } from '@material-ui/pickers';
 import axios from 'axios';
 import {constants} from '../common';
+import firebase from '../firebase';
 
 class CreateFastPresence extends Component {
         constructor(props) {
@@ -20,10 +21,19 @@ class CreateFastPresence extends Component {
                   this.handleMealChange = this.handleMealChange.bind(this);
                   this.onSubmit = this.onSubmit.bind(this);
 
+                  this.peopleRef = firebase.firestore().collection('peoples');
+                  this.presenceRef = firebase.firestore().collection('presences');
+
+                  var presenceDate = new Date();
+                  presenceDate.setHours(0);
+                  presenceDate.setMinutes(0);
+                  presenceDate.setSeconds(0);
+                  presenceDate.setMilliseconds(0);
+
                   this.state = {
                       presenceId : '',
                       personId : '',
-                      selectedDate : new Date(),
+                      selectedDate : presenceDate,
                       arrivalTime : new Date(),
                       depatureTime : new Date(),
                       hasMeal : false,
@@ -35,13 +45,36 @@ class CreateFastPresence extends Component {
 
                 componentDidMount() {
 
+                    var newPeople = [];
+                    var that = this;
+
                     // Chargement liste personnes
-                    fetch(constants.apiUrl + '/people/')
-                    .then(res => res.json())
-                    .then((data) => {
-                        this.setState({ peoples: data })
-                    })
-                    .catch(console.log)
+                    this.peopleRef.get()
+                    .then(function(querySnapshot) {
+                      querySnapshot.forEach(function(doc) {
+                          // doc.data() is never undefined for query doc snapshots
+                          var currentData = doc.data();
+                          currentData.id = doc.id;
+
+                          newPeople.push(currentData);
+
+                          that.setState({
+                            peoples: newPeople
+                          });
+
+                          console.log(doc.id, " => ", doc.data());
+                      });
+                    });
+
+                    // Initialisation des heures
+                    this.state.arrivalTime.setHours(7);
+                    this.state.arrivalTime.setMinutes(0);
+                    this.state.arrivalTime.setSeconds(0);
+                    this.state.arrivalTime.setMilliseconds(0);
+                    this.state.depatureTime.setHours(16);
+                    this.state.depatureTime.setMinutes(30);
+                    this.state.arrivalTime.setSeconds(0);
+                    this.state.arrivalTime.setMilliseconds(0);
 
                 }
 
@@ -49,23 +82,71 @@ class CreateFastPresence extends Component {
 
               handlePersonChange = e => {
 
-                  // Chargement liste personnes
-                  fetch(constants.apiUrl + '/presenceSearch/' + e.target.value + '/' + this.state.selectedDate.toISOString().slice(0,10))
-                  .then(res => res.json())
-                  .then((data) => {
-                      this.setState({
-                            previousPresence: data,
-                            arrivalTime: data.arrival,
-                            depatureTime: data.departure,
-                            hasMeal: data.hasMeal,
-                            presenceId: data.id
-                       })
-                  })
-                  .catch(console.log)
+                    var that = this;
 
-                  this.setState({
-                            personId : e.target.value
-                  });
+
+                    console.log("SearchDate => ", Math.round((this.state.selectedDate).getTime() / 1000));
+
+                    this.presenceRef
+                    .where("personId", "==", e.target.value)
+                    //.where("presenceDay.seconds", "==", 1573426800)
+                    .get()
+                    .then(function(querySnapshot) {
+                        if(querySnapshot.empty) {
+
+                            var arrivalDate = new Date();
+                            var departureDate = new Date();
+
+
+                            arrivalDate.setHours(7);
+                            arrivalDate.setMinutes(0);
+                            arrivalDate.setSeconds(0);
+                            arrivalDate.setMilliseconds(0);
+                            departureDate.setHours(16);
+                            departureDate.setMinutes(30);
+                            departureDate.setSeconds(0);
+                            departureDate.setMilliseconds(0);
+
+                            that.setState({
+                                arrivalTime : arrivalDate,
+                                depatureTime : departureDate
+                            });
+
+                        } else {
+                            querySnapshot.forEach(function(doc) {
+                                // doc.data() is never undefined for query doc snapshots
+                                var currentData = doc.data();
+                                currentData.id = doc.id;
+
+
+                                console.log(" => ", that.state.selectedDate.getTime());
+                                console.log(" => ", currentData.presenceDay.seconds*1000);
+
+                                if(that.state.selectedDate.getTime() == currentData.presenceDay.seconds*1000) {
+
+                                    that.setState({
+                                        presenceId : doc.id,
+                                        personId : currentData.personId,
+                                        selectedDate : new Date(currentData.presenceDay.seconds*1000),
+                                        arrivalTime : new Date(currentData.arrival.seconds*1000),
+                                        depatureTime : new Date(currentData.departure.seconds*1000),
+                                        hasMeal : currentData.hasMeal,
+                                        previousPresence: ''
+                                    });
+
+
+                                    currentData.hasMeal ? that.refs.hasMeal.classList.add('active') : that.refs.hasMeal.classList.remove('active') ;
+
+                                    console.log(doc.id, " => ", doc.data());
+
+                                }
+                            });
+                        }
+                    });
+
+                    this.setState({
+                        personId : e.target.value
+                    });
               }
 
               handleDateChange = date => {
@@ -96,17 +177,46 @@ class CreateFastPresence extends Component {
               onSubmit(e) {
                             e.preventDefault();
 
-                            const obj = {
-                                    id : this.state.presenceId,
+                            if (this.state.presenceId == '') {
+
+                                this.presenceRef.add({
                                     personId : this.state.personId,
                                     presenceDay : this.state.selectedDate,
                                     arrival : this.state.arrivalTime,
                                     departure : this.state.depatureTime,
                                     hasMeal : this.state.hasMeal
-                                };
-                                axios.post(constants.apiUrl + '/presence/', obj)
-                                    .then(res => console.log(res.data), this.props.history.push(`/presence/list`))
-                                    .catch(error => {console.log(error);});
+                                })
+                                .then((docRef) => {
+                                    this.props.history.push("/presence/list")
+                                })
+                                .catch((error) => {
+                                    console.error("Error adding document: ", error);
+                                });
+
+                            } else {
+
+                                const obj = {
+                                        id : this.state.presenceId,
+                                        personId : this.state.personId,
+                                        presenceDay : this.state.selectedDate,
+                                        arrival : this.state.arrivalTime,
+                                        departure : this.state.depatureTime,
+                                        hasMeal : this.state.hasMeal
+                                    };
+
+                                this.presenceRef.doc(this.state.presenceId).set(obj)
+                                  .then(this.props.history.push(`/presence/list`))
+                                  .catch(error => {console.log(error);});
+
+                            }
+
+                            this.setState({
+                                    personId : '',
+                                    selectedDate : new Date(),
+                                    arrivalTime : new Date(),
+                                    depatureTime : new Date(),
+                                    hasMeal : false
+                            })
 
               }
 

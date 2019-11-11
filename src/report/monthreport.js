@@ -38,10 +38,15 @@ class ReportPresence extends Component {
                             var currentData = doc.data();
                             currentData.id = doc.id;
 
+                            currentData.presenceDay = new Date(currentData.presenceDay.seconds*1000);
+                            currentData.arrival = new Date(currentData.arrival.seconds*1000);
+                            currentData.departure = new Date(currentData.departure.seconds*1000);
+
                             newPresence.push(currentData);
 
                             that.setState({
-                                presences : newPresence
+                                presences : newPresence,
+                                peoples : newPeople
                             });
 
                             console.log(doc.id, " => ", doc.data());
@@ -59,7 +64,8 @@ class ReportPresence extends Component {
                             newPeople.push(currentData);
 
                             that.setState({
-                                peoples: newPeople
+                                presences : newPresence,
+                                peoples : newPeople
                             });
 
                             console.log(doc.id, " => ", doc.data());
