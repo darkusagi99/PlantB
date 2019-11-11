@@ -188,7 +188,7 @@ class ReportPresence extends Component {
 
                              <th>Elève</th>
                              {this.getDaysInMonth().map((dayInMonth) => (
-                                <th class={this.isUnworkedDay(dayInMonth)}>{dayInMonth.getDate() + '-' + dayInMonth.getDay()}</th>
+                                <th class={this.isUnworkedDay(dayInMonth)}>{dayInMonth.getDate()}</th>
                              ))}
                          </tr>
                     </thead>
