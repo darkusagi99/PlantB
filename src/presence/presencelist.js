@@ -81,11 +81,11 @@ class Presence extends Component {
                      <table class="table">
                      <thead>
                          <tr>
-                               <th scope="col">Name</th>
-                               <th scope="col">Day</th>
-                               <th scope="col">Arrival</th>
-                               <th scope="col">Departure</th>
-                               <th scope="col">Meal</th>
+                               <th scope="col">Nom</th>
+                               <th scope="col">Jour</th>
+                               <th scope="col">Arrive</th>
+                               <th scope="col">Depart</th>
+                               <th scope="col">Repas</th>
                                <th scope="col">&nbsp;</th>
                          </tr>
                      </thead>
@@ -96,7 +96,7 @@ class Presence extends Component {
                              <td>{presence.presenceDay ? (this.displayFormatedDate(presence.presenceDay)) : ("-")}</td>
                              <td>{presence.arrival ? (this.displayFormatedTime(presence.arrival)) : ("-")}</td>
                              <td>{presence.departure ? (this.displayFormatedTime(presence.departure)) : ("-")}</td>
-                             <td>{presence.hasMeal ? ("With Meal") : ("Without Meal")}</td>
+                             <td>{presence.hasMeal ? ("Avec Meal") : ("Sans Meal")}</td>
 
                              <td><Link to={'/presence/update/' + presence.id} className="nav-link">Update Presence</Link></td>
                          </tr>

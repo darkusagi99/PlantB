@@ -99,10 +99,10 @@ class CreatePeople extends Component {
         render() {
             return (
                 <div style={{marginTop: 10}}>
-                    <h3>Create People</h3>
+                    <h3>Creation Eleve</h3>
                     <form onSubmit={this.onSubmit}>
                         <div className="form-group">
-                            <label>Name:  </label>
+                            <label>Nom:  </label>
                             <input type="text"
                                 className="form-control"
                                 value={this.state.user_name}
@@ -110,29 +110,29 @@ class CreatePeople extends Component {
                         </div>
                         <div className="form-group">
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-light disabled">Morning</button>
-                                <button type="button" class="btn btn-secondary" value="MONDAY"  onClick={this.onButtonArrivalChange} >Monday</button>
-                                <button type="button" class="btn btn-secondary" value="TUESDAY"  onClick={this.onButtonArrivalChange} >Tuesday</button>
-                                <button type="button" class="btn btn-secondary" value="THURSDAY"  onClick={this.onButtonArrivalChange} >Thursday</button>
-                                <button type="button" class="btn btn-secondary" value="FRIDAY"  onClick={this.onButtonArrivalChange} >Friday</button>
+                                <button type="button" class="btn btn-light disabled">Matin</button>
+                                <button type="button" class="btn btn-secondary" value="MONDAY"  onClick={this.onButtonArrivalChange} >Lundi</button>
+                                <button type="button" class="btn btn-secondary" value="TUESDAY"  onClick={this.onButtonArrivalChange} >Mardi</button>
+                                <button type="button" class="btn btn-secondary" value="THURSDAY"  onClick={this.onButtonArrivalChange} >Jeudi</button>
+                                <button type="button" class="btn btn-secondary" value="FRIDAY"  onClick={this.onButtonArrivalChange} >Vendredi</button>
                             </div>
                         </div>
                         <div className="form-group">
                             <div class="btn-group" role="group" aria-label="Basic example">
                                 <button type="button" class="btn btn-light disabled">Evening</button>
-                                <button type="button" class="btn btn-secondary" value="MONDAY"  onClick={this.onButtonDepartureChange} >Monday</button>
-                                <button type="button" class="btn btn-secondary" value="TUESDAY"  onClick={this.onButtonDepartureChange} >Tuesday</button>
-                                <button type="button" class="btn btn-secondary" value="THURSDAY"  onClick={this.onButtonDepartureChange} >Thursday</button>
-                                <button type="button" class="btn btn-secondary" value="FRIDAY"  onClick={this.onButtonDepartureChange} >Friday</button>
+                                <button type="button" class="btn btn-secondary" value="MONDAY"  onClick={this.onButtonDepartureChange} >Lundi</button>
+                                <button type="button" class="btn btn-secondary" value="TUESDAY"  onClick={this.onButtonDepartureChange} >Mardi</button>
+                                <button type="button" class="btn btn-secondary" value="THURSDAY"  onClick={this.onButtonDepartureChange} >Jeudi</button>
+                                <button type="button" class="btn btn-secondary" value="FRIDAY"  onClick={this.onButtonDepartureChange} >Vendredi</button>
                             </div>
                         </div>
                         <div className="form-group">
                             <div class="btn-group" role="group" aria-label="Basic example">
                                 <button type="button" class="btn btn-light disabled">Meal</button>
-                                <button type="button" class="btn btn-secondary" value="MONDAY"  onClick={this.onButtonMealChange} >Monday</button>
-                                <button type="button" class="btn btn-secondary" value="TUESDAY"  onClick={this.onButtonMealChange} >Tuesday</button>
-                                <button type="button" class="btn btn-secondary" value="THURSDAY"  onClick={this.onButtonMealChange} >Thursday</button>
-                                <button type="button" class="btn btn-secondary" value="FRIDAY"  onClick={this.onButtonMealChange} >Friday</button>
+                                <button type="button" class="btn btn-secondary" value="MONDAY"  onClick={this.onButtonMealChange} >Lundi</button>
+                                <button type="button" class="btn btn-secondary" value="TUESDAY"  onClick={this.onButtonMealChange} >Mardi</button>
+                                <button type="button" class="btn btn-secondary" value="THURSDAY"  onClick={this.onButtonMealChange} >Jeudi</button>
+                                <button type="button" class="btn btn-secondary" value="FRIDAY"  onClick={this.onButtonMealChange} >Vendredi</button>
                             </div>
                         </div>
                         <div className="form-group">

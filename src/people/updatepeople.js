@@ -119,10 +119,10 @@ class UpdatePeople extends Component {
         render() {
             return (
                 <div style={{marginTop: 10}}>
-                    <h3>Update People</h3>
+                    <h3>Maj Eleve</h3>
                     <form onSubmit={this.onSubmit}>
                         <div className="form-group">
-                            <label>Name:  </label>
+                            <label>Nom:  </label>
                             <input type="text"
                                 className="form-control"
                                 value={this.state.fullname}
@@ -130,29 +130,29 @@ class UpdatePeople extends Component {
                         </div>
                         <div className="form-group">
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-light disabled">Morning</button>
-                                <button type="button" class="btn btn-secondary" value="MONDAY" ref="arrivalMonday"  onClick={this.onButtonArrivalChange} >Monday</button>
-                                <button type="button" class="btn btn-secondary" value="TUESDAY" ref="arrivalTuesday"  onClick={this.onButtonArrivalChange} >Tuesday</button>
-                                <button type="button" class="btn btn-secondary" value="THURSDAY" ref="arrivalThursday"  onClick={this.onButtonArrivalChange} >Thursday</button>
-                                <button type="button" class="btn btn-secondary" value="FRIDAY" ref="arrivalFriday"  onClick={this.onButtonArrivalChange} >Friday</button>
+                                <button type="button" class="btn btn-light disabled">Matin</button>
+                                <button type="button" class="btn btn-secondary" value="MONDAY" ref="arrivalMonday"  onClick={this.onButtonArrivalChange} >Lundi</button>
+                                <button type="button" class="btn btn-secondary" value="TUESDAY" ref="arrivalTuesday"  onClick={this.onButtonArrivalChange} >Mardi</button>
+                                <button type="button" class="btn btn-secondary" value="THURSDAY" ref="arrivalThursday"  onClick={this.onButtonArrivalChange} >Jeudi</button>
+                                <button type="button" class="btn btn-secondary" value="FRIDAY" ref="arrivalFriday"  onClick={this.onButtonArrivalChange} >Vendredi</button>
                             </div>
                         </div>
                         <div className="form-group">
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-light disabled">Evening</button>
-                                <button type="button" class="btn btn-secondary" value="MONDAY" ref="leaveMonday"  onClick={this.onButtonDepartureChange} >Monday</button>
-                                <button type="button" class="btn btn-secondary" value="TUESDAY" ref="leaveTuesday"  onClick={this.onButtonDepartureChange} >Tuesday</button>
-                                <button type="button" class="btn btn-secondary" value="THURSDAY" ref="leaveThursday"  onClick={this.onButtonDepartureChange} >Thursday</button>
-                                <button type="button" class="btn btn-secondary" value="FRIDAY" ref="leaveFriday"  onClick={this.onButtonDepartureChange} >Friday</button>
+                                <button type="button" class="btn btn-light disabled">Soir</button>
+                                <button type="button" class="btn btn-secondary" value="MONDAY" ref="leaveMonday"  onClick={this.onButtonDepartureChange} >Lundi</button>
+                                <button type="button" class="btn btn-secondary" value="TUESDAY" ref="leaveTuesday"  onClick={this.onButtonDepartureChange} >Mardi</button>
+                                <button type="button" class="btn btn-secondary" value="THURSDAY" ref="leaveThursday"  onClick={this.onButtonDepartureChange} >Jeudi</button>
+                                <button type="button" class="btn btn-secondary" value="FRIDAY" ref="leaveFriday"  onClick={this.onButtonDepartureChange} >Vendredi</button>
                             </div>
                         </div>
                         <div className="form-group">
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-light disabled">Meal</button>
-                                <button type="button" class="btn btn-secondary" value="MONDAY" ref="mealMonday"  onClick={this.onButtonMealChange} >Monday</button>
-                                <button type="button" class="btn btn-secondary" value="TUESDAY" ref="mealTuesday"  onClick={this.onButtonMealChange} >Tuesday</button>
-                                <button type="button" class="btn btn-secondary" value="THURSDAY" ref="mealThursday"  onClick={this.onButtonMealChange} >Thursday</button>
-                                <button type="button" class="btn btn-secondary" value="FRIDAY" ref="mealFriday"  onClick={this.onButtonMealChange} >Friday</button>
+                                <button type="button" class="btn btn-light disabled">Repas</button>
+                                <button type="button" class="btn btn-secondary" value="MONDAY" ref="mealMonday"  onClick={this.onButtonMealChange} >Lundi</button>
+                                <button type="button" class="btn btn-secondary" value="TUESDAY" ref="mealTuesday"  onClick={this.onButtonMealChange} >Mardi</button>
+                                <button type="button" class="btn btn-secondary" value="THURSDAY" ref="mealThursday"  onClick={this.onButtonMealChange} >Jeudi</button>
+                                <button type="button" class="btn btn-secondary" value="FRIDAY" ref="mealFriday"  onClick={this.onButtonMealChange} >Vendredi</button>
                             </div>
                         </div>
                         <div className="form-group">

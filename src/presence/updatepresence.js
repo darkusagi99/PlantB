@@ -138,11 +138,11 @@ class UpdatePresence extends Component {
         render() {
             return (
                 <div style={{marginTop: 10}}>
-                    <h3>Update Presence</h3>
+                    <h3>Maj Presence</h3>
                     <form onSubmit={this.onSubmit}>
                         <div class="input-group mb-3">
                           <div class="input-group-prepend">
-                            <label class="input-group-text" for="inputGroupPerson">Person</label>
+                            <label class="input-group-text" for="inputGroupPerson">Eleve</label>
                           </div>
                           <select class="custom-select" id="inputGroupPerson" value={this.state.personId} onChange={this.handlePersonChange}>
                             {this.state.peoples.map((people) => (
@@ -173,7 +173,7 @@ class UpdatePresence extends Component {
                                     <KeyboardTimePicker
                                       margin="normal"
                                       id="time-picker"
-                                      label="Arrival"
+                                      label="Arrive"
                                       ampm={false}
                                       value={this.state.arrivalTime}
                                       onChange={this.handleArrivalChange}
@@ -188,7 +188,7 @@ class UpdatePresence extends Component {
                                     <KeyboardTimePicker
                                       margin="normal"
                                       id="time-picker"
-                                      label="Departure"
+                                      label="Depart"
                                       ampm={false}
                                       value={this.state.depatureTime}
                                       onChange={this.handleDepartureChange}
@@ -200,7 +200,7 @@ class UpdatePresence extends Component {
                         </div>
                         <div className="form-group">
                             <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                                <button type="button" class="btn btn-secondary" onClick={this.handleMealChange} ref="hasMeal">HasMeal</button>
+                                <button type="button" class="btn btn-secondary" onClick={this.handleMealChange} ref="hasMeal">Repas</button>
                             </div>
                         </div>
                         <div className="form-group">

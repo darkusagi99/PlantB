@@ -45,20 +45,20 @@ class App extends Component {
                     <Router>
                           <div className="container">
                             <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                              <Link to={'/'} className="navbar-brand">TimeManager</Link>
+                              <Link to={'/'} className="navbar-brand">Plant B</Link>
                               <div className="collapse navbar-collapse" id="navbarSupportedContent">
                                 <ul className="navbar-nav mr-auto">
                                   <li className="nav-item">
-                                    <Link to={'/people/list'} className="nav-link">People</Link>
+                                    <Link to={'/people/list'} className="nav-link">Eleves</Link>
                                   </li>
                                   <li className="nav-item">
-                                    <Link to={'/presence/list'} className="nav-link">Presence</Link>
+                                    <Link to={'/presence/list'} className="nav-link">Presences</Link>
                                   </li>
                                   <li className="nav-item">
-                                    <Link to={'/report/month'} className="nav-link">Month Report</Link>
+                                    <Link to={'/report/month'} className="nav-link">Rapport mensuel</Link>
                                   </li>
                                 </ul>
-                                <button  class="btn btn-secondary" onClick={signOut}>Sign out</button>
+                                <button  class="btn btn-secondary" onClick={signOut}>Deconnecter</button>
                               </div>
                             </nav> <br/>
                             <Switch>
@@ -79,7 +79,7 @@ class App extends Component {
                     <header className="App-header">
                       <img src={logo} className="App-logo" alt="logo" />
                       <p>Please sign in.</p>
-                      <button onClick={signInWithGoogle}>Sign in with Google</button>
+                      <button onClick={signInWithGoogle}>Connexion avec Google</button>
                     </header>
              </div>
         }
