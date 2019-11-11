@@ -58,12 +58,12 @@ class App extends Component {
                                     <Link to={'/report/month'} className="nav-link">Rapport mensuel</Link>
                                   </li>
                                 </ul>
-                                <span class="badge badge-pill badge-secondary">v1.1</span>
+                                <span class="badge badge-pill badge-secondary">v1.2</span>
                                 <button  class="btn btn-secondary" onClick={signOut}>Deconnecter</button>
                               </div>
                             </nav> <br/>
                             <Switch>
-                                <Route path='/people/create' component={ CreatePeople } />
+                                <Route path='/people/create' component={ UpdatePeople } />
                                 <Route path='/people/list' component={ People } />
                                 <Route path='/people/update/:id' component={ UpdatePeople } />
                                 <Route path='/presence/create' component={ CreatePresence } />

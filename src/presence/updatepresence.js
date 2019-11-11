@@ -82,10 +82,7 @@ class UpdatePresence extends Component {
                 });
             });
 
-
         }
-
-
 
       handlePersonChange = e => {
           this.setState({

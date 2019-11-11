@@ -12,7 +12,7 @@ class UpdatePeople extends Component {
           this.onButtonMealChange = this.onButtonMealChange.bind(this);
           this.onSubmit = this.onSubmit.bind(this);
 
-          this.ref = firebase.firestore().collection('peoples').doc(this.props.match.params.id);
+          this.ref = firebase.firestore().collection('peoples');
 
           this.state = {
               id : '',
@@ -26,30 +26,33 @@ class UpdatePeople extends Component {
 
 
       componentDidMount() {
-            this.ref.get()
-            .then((doc) => {
-                this.setState({
-                    previousPeople: doc.data(),
-                    id : doc.id,
-                    fullname : doc.data().fullname,
-                    standardArrival : new Map(doc.data().standardArrival.map(i => [i, true])),
-                    standardDeparture : new Map(doc.data().standardDeparture.map(i => [i, true])),
-                    standardMeal : new Map(doc.data().standardMeal.map(i => [i, true]))
-                 });
-                 doc.data().standardArrival.includes("MONDAY") ? this.refs.arrivalMonday.classList.add('active') : this.refs.arrivalMonday.classList.remove('active') ;
-                 doc.data().standardArrival.includes("TUESDAY") ? this.refs.arrivalTuesday.classList.add('active') : this.refs.arrivalTuesday.classList.remove('active') ;
-                 doc.data().standardArrival.includes("THURSDAY") ? this.refs.arrivalThursday.classList.add('active') : this.refs.arrivalThursday.classList.remove('active') ;
-                 doc.data().standardArrival.includes("FRIDAY") ? this.refs.arrivalFriday.classList.add('active') : this.refs.arrivalFriday.classList.remove('active') ;
-                 doc.data().standardDeparture.includes("MONDAY") ? this.refs.leaveMonday.classList.add('active') : this.refs.leaveMonday.classList.remove('active') ;
-                 doc.data().standardDeparture.includes("TUESDAY") ? this.refs.leaveTuesday.classList.add('active') : this.refs.leaveTuesday.classList.remove('active') ;
-                 doc.data().standardDeparture.includes("THURSDAY") ? this.refs.leaveThursday.classList.add('active') : this.refs.leaveThursday.classList.remove('active') ;
-                 doc.data().standardDeparture.includes("FRIDAY") ? this.refs.leaveFriday.classList.add('active') : this.refs.leaveFriday.classList.remove('active') ;
-                 doc.data().standardMeal.includes("MONDAY") ? this.refs.mealMonday.classList.add('active') : this.refs.mealMonday.classList.remove('active') ;
-                 doc.data().standardMeal.includes("TUESDAY") ? this.refs.mealTuesday.classList.add('active') : this.refs.mealTuesday.classList.remove('active') ;
-                 doc.data().standardMeal.includes("THURSDAY") ? this.refs.mealThursday.classList.add('active') : this.refs.mealThursday.classList.remove('active') ;
-                 doc.data().standardMeal.includes("FRIDAY") ? this.refs.mealFriday.classList.add('active') : this.refs.mealFriday.classList.remove('active') ;
-            })
-            .catch(console.log)
+            if (this.props.match.params.id != undefined) {
+                this.ref.doc(this.props.match.params.id)
+                .get()
+                .then((doc) => {
+                    this.setState({
+                        previousPeople: doc.data(),
+                        id : doc.id,
+                        fullname : doc.data().fullname,
+                        standardArrival : new Map(doc.data().standardArrival.map(i => [i, true])),
+                        standardDeparture : new Map(doc.data().standardDeparture.map(i => [i, true])),
+                        standardMeal : new Map(doc.data().standardMeal.map(i => [i, true]))
+                     });
+                     doc.data().standardArrival.includes("MONDAY") ? this.refs.arrivalMonday.classList.add('active') : this.refs.arrivalMonday.classList.remove('active') ;
+                     doc.data().standardArrival.includes("TUESDAY") ? this.refs.arrivalTuesday.classList.add('active') : this.refs.arrivalTuesday.classList.remove('active') ;
+                     doc.data().standardArrival.includes("THURSDAY") ? this.refs.arrivalThursday.classList.add('active') : this.refs.arrivalThursday.classList.remove('active') ;
+                     doc.data().standardArrival.includes("FRIDAY") ? this.refs.arrivalFriday.classList.add('active') : this.refs.arrivalFriday.classList.remove('active') ;
+                     doc.data().standardDeparture.includes("MONDAY") ? this.refs.leaveMonday.classList.add('active') : this.refs.leaveMonday.classList.remove('active') ;
+                     doc.data().standardDeparture.includes("TUESDAY") ? this.refs.leaveTuesday.classList.add('active') : this.refs.leaveTuesday.classList.remove('active') ;
+                     doc.data().standardDeparture.includes("THURSDAY") ? this.refs.leaveThursday.classList.add('active') : this.refs.leaveThursday.classList.remove('active') ;
+                     doc.data().standardDeparture.includes("FRIDAY") ? this.refs.leaveFriday.classList.add('active') : this.refs.leaveFriday.classList.remove('active') ;
+                     doc.data().standardMeal.includes("MONDAY") ? this.refs.mealMonday.classList.add('active') : this.refs.mealMonday.classList.remove('active') ;
+                     doc.data().standardMeal.includes("TUESDAY") ? this.refs.mealTuesday.classList.add('active') : this.refs.mealTuesday.classList.remove('active') ;
+                     doc.data().standardMeal.includes("THURSDAY") ? this.refs.mealThursday.classList.add('active') : this.refs.mealThursday.classList.remove('active') ;
+                     doc.data().standardMeal.includes("FRIDAY") ? this.refs.mealFriday.classList.add('active') : this.refs.mealFriday.classList.remove('active') ;
+                })
+                .catch(console.log)
+            }
         }
 
 
@@ -61,19 +64,16 @@ class UpdatePeople extends Component {
 
       /** Méthode permettznt de gérer les changements du niveau des boutons - A mutualiser */
       onButtonArrivalChange(e) {
-            const item = e.target.value;
             e.target.classList.toggle('active');
             const active = e.target.classList.contains('active');
             this.state.standardArrival.set(item, active);
       }
       onButtonDepartureChange(e) {
-            const item = e.target.value;
             e.target.classList.toggle('active');
             const active = e.target.classList.contains('active');
             this.state.standardDeparture.set(item, active);
       }
       onButtonMealChange(e) {
-            const item = e.target.value;
             e.target.classList.toggle('active');
             const active = e.target.classList.contains('active');
             this.state.standardMeal.set(item, active);
@@ -103,9 +103,29 @@ class UpdatePeople extends Component {
                     standardDeparture:  Array.from( this.state.standardDeparture.keys()),
                     standardMeal: Array.from( this.state.standardMeal.keys())
                   };
-                  this.ref.set(obj)
-                      .then(this.props.history.push(`/people/list`))
-                      .catch(error => {console.log(error);});
+
+                if (this.props.match.params.id == undefined) {
+                    this.ref.add({
+                        fullname: this.state.fullname,
+                        standardArrival: Array.from( this.state.standardArrival.keys()),
+                        standardDeparture:  Array.from( this.state.standardDeparture.keys()),
+                        standardMeal: Array.from( this.state.standardMeal.keys())
+                    })
+                    .then((docRef) => {
+                        this.props.history.push("/people/list")
+                    })
+                    .catch((error) => {
+                        console.error("Error adding document: ", error);
+                    });
+                } else {
+
+                    this.ref.doc(this.props.match.params.id).set(obj)
+                    .then(this.props.history.push(`/people/list`))
+                    .catch(error => {console.log(error);});
+                }
+
+
+
 
               this.setState({
                     fullname: '',
@@ -119,7 +139,7 @@ class UpdatePeople extends Component {
         render() {
             return (
                 <div style={{marginTop: 10}}>
-                    <h3>Maj élève</h3>
+                    <h3>{this.props.match.params.id == undefined ? "Création élève" : "MàJ élève" }</h3>
                     <form onSubmit={this.onSubmit}>
                         <div className="form-group">
                             <label>Nom:  </label>
