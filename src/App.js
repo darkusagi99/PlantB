@@ -65,7 +65,7 @@ class App extends Component {
                                 <Route path='/people/create' component={ UpdatePeople } />
                                 <Route path='/people/list' component={ People } />
                                 <Route path='/people/update/:id' component={ UpdatePeople } />
-                                <Route path='/presence/create' component={ CreatePresence } />
+                                <Route path='/presence/create' component={ CreateFastPresence } />
                                 <Route path='/presence/list' component={ Presence } />
                                 <Route path='/presence/update/:id' component={ UpdatePresence } />
                                 <Route path='/report/month' component={ ReportPresence } />
