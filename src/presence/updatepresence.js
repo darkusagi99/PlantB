@@ -7,7 +7,6 @@ import {
   KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-import axios from 'axios';
 import {constants} from '../common';
 import firebase from '../firebase';
 
@@ -23,7 +22,7 @@ class UpdatePresence extends Component {
           this.onSubmit = this.onSubmit.bind(this);
 
           this.peopleRef = firebase.firestore().collection('peoples');
-          this.presenceRef = firebase.firestore().collection('presences');
+          this.presenceRef = firebase.firestore().collection('presences').doc(this.props.match.params.id);
 
           this.state = {
               presenceId : '',
@@ -44,24 +43,24 @@ class UpdatePresence extends Component {
             var that = this;
 
             this.presenceRef.get()
-            .then(function(querySnapshotPres) {
-                    querySnapshotPres.forEach(function(doc) {
-                        // doc.data() is never undefined for query doc snapshots
-                        var currentData = doc.data();
-                        currentData.id = doc.id;
+            .then(function(doc) {
+                // doc.data() is never undefined for query doc snapshots
+                var currentData = doc.data();
+                currentData.id = doc.id;
 
-                        that.setState({
-                            presenceId : doc.id,
-                            personId : currentData.personId,
-                            selectedDate : new Date(currentData.presenceDay.seconds*1000),
-                            arrivalTime : new Date(currentData.arrival.seconds*1000),
-                            depatureTime : new Date(currentData.departure.seconds*1000),
-                            hasMeal : currentData.hasMeal,
-                            previousPresence: ''
-                        });
+                that.setState({
+                    presenceId : doc.id,
+                    personId : currentData.personId,
+                    selectedDate : new Date(currentData.presenceDay.seconds*1000),
+                    arrivalTime : new Date(currentData.arrival.seconds*1000),
+                    depatureTime : new Date(currentData.departure.seconds*1000),
+                    hasMeal : currentData.hasMeal,
+                    previousPresence: ''
+                });
 
-                        console.log(doc.id, " => ", doc.data());
-                    });
+                currentData.hasMeal ? that.refs.hasMeal.classList.add('active') : that.refs.hasMeal.classList.remove('active') ;
+
+                console.log(doc.id, " => ", doc.data());
             });
 
 
@@ -129,9 +128,10 @@ class UpdatePresence extends Component {
                             departure : this.state.depatureTime,
                             hasMeal : this.state.hasMeal
                         };
-                        axios.post(constants.apiUrl + '/presence/', obj)
-                            .then(res => console.log(res.data), this.props.history.push(`/presence/list`))
-                            .catch(error => {console.log(error);});
+
+                    this.presenceRef.set(obj)
+                      .then(this.props.history.push(`/presence/list`))
+                      .catch(error => {console.log(error);});
 
       }
 
