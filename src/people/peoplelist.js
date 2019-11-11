@@ -82,7 +82,7 @@ class People extends Component {
                     <Link to={'/people/create'} className="nav-link">Ajouter élève</Link>
                 </div>
 
-                <table class="table">
+                <table class="table table-striped">
                     <thead>
                         <tr>
                             <th scope="col">Nom</th>

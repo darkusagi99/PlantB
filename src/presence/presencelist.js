@@ -228,7 +228,7 @@ class Presence extends Component {
                     </form>
                 </div>
 
-                <table class="table">
+                <table class="table table-striped">
                     <thead>
                         <tr>
                             <th scope="col">Nom</th>
