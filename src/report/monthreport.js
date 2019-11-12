@@ -2,11 +2,9 @@ import 'date-fns';
 import React, { Component } from 'react'
 import DateFnsUtils from '@date-io/date-fns';
 import { Link } from 'react-router-dom';
-import {constants} from '../common';
 import firebase from '../firebase';
 import {
   MuiPickersUtilsProvider,
-  KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 
@@ -110,8 +108,8 @@ class ReportPresence extends Component {
                         console.log("date.getFullYear() => ", date.getFullYear());
                         console.log("date.getMonth() => ", date.getMonth());
 
-                        if(currentDate.getFullYear() == date.getFullYear()
-                            && currentDate.getMonth() == date.getMonth()) {
+                        if(currentDate.getFullYear() === date.getFullYear()
+                            && currentDate.getMonth() === date.getMonth()) {
 
                             newPresence.push(currentData);
 
@@ -151,9 +149,8 @@ class ReportPresence extends Component {
               case 3:
               case 6:
                 return "table-secondary";
-                break;
               default:
-                return "";
+                break;
             }
         }
 
@@ -203,10 +200,10 @@ class ReportPresence extends Component {
                             <td>{people.fullname}</td>
                             {(this.getDaysInMonth(this.state.selectedDate)).map((dayInMonth) => (
                                      <td class={this.isUnworkedDay(dayInMonth)}>{this.state.presences
-                                        .filter((presence) => (people.id == presence.personId))
-                                        .filter((presence) => (dayInMonth.getFullYear() == new Date(presence.presenceDay).getFullYear()))
-                                        .filter((presence) => (dayInMonth.getMonth() == new Date(presence.presenceDay).getMonth()))
-                                        .filter((presence) => (dayInMonth.getDate() == new Date(presence.presenceDay).getDate()))
+                                        .filter((presence) => (people.id === presence.personId))
+                                        .filter((presence) => (dayInMonth.getFullYear() === new Date(presence.presenceDay).getFullYear()
+                                                                && dayInMonth.getMonth() === new Date(presence.presenceDay).getMonth()
+                                                                && dayInMonth.getDate() === new Date(presence.presenceDay).getDate()))
                                         .map((presence) => (
                                                 <p>
                                                     {presence.arrival ? (this.displayFormatedTime(presence.arrival)) : ("-")}-{presence.departure ? (this.displayFormatedTime(presence.departure)) : ("-")}

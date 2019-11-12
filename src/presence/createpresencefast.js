@@ -1,13 +1,11 @@
 import 'date-fns';
 import React, { Component } from 'react'
-import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-import {constants} from '../common';
 import firebase from '../firebase';
 
 class CreateFastPresence extends Component {
@@ -82,7 +80,7 @@ class CreateFastPresence extends Component {
         this.state.arrivalTime.setSeconds(0);
         this.state.arrivalTime.setMilliseconds(0);
 
-        if (this.props.match.params.id != undefined) {
+        if (this.props.match.params.id !== undefined) {
 
         this.presenceRef.doc(this.props.match.params.id).get()
         .then(function(doc) {
@@ -245,10 +243,11 @@ class CreateFastPresence extends Component {
     }
 
     handleMealChange(e) {
-        const item = e.target.value;
         e.target.classList.toggle('active');
         const active = e.target.classList.contains('active');
-        this.state.hasMeal = active;
+        this.setState({
+            hasMeal: active
+        });
 
         if (active) {
             e.target.innerHTML = "Avec Repas";
@@ -260,7 +259,7 @@ class CreateFastPresence extends Component {
     onSubmit(e) {
         e.preventDefault();
 
-        if (this.state.presenceId == '') {
+        if (this.state.presenceId === '') {
 
             this.presenceRef.add({
                 personId : this.state.personId,

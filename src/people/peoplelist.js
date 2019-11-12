@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
-import {constants} from '../common';
 import firebase from '../firebase';
 
 class People extends Component {
@@ -13,7 +12,7 @@ class People extends Component {
         this.affichageJours = this.affichageJours.bind(this);
 
         this.ref = firebase.firestore().collection('peoples');
-        this.state = { peoples: new Array() };
+        this.state = { peoples: [] };
     }
 
     // Chargement lors du montage
@@ -62,6 +61,8 @@ class People extends Component {
                         break;
                     case 'FRIDAY':
                         elementTxt = 'Vendredi';
+                        break;
+                    default:
                         break;
                 }
 

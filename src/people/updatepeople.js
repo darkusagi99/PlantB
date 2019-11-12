@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import {constants} from '../common';
 import firebase from '../firebase';
 
 class UpdatePeople extends Component {
@@ -29,7 +28,7 @@ class UpdatePeople extends Component {
     componentDidMount() {
 
         // Uniquement pour la mise à jour
-        if (this.props.match.params.id != undefined) {
+        if (this.props.match.params.id !== undefined) {
 
             // Chargement données et mise à jour page
             this.ref.doc(this.props.match.params.id)
@@ -95,7 +94,7 @@ class UpdatePeople extends Component {
 
     /** Méthode permettant de filtrer la Map et de ne conserver que les éléments qui nous intéressent */
     filterMapElement(value, key, map) {
-        if (value != true) {
+        if (value !== true) {
             map.delete(key);
         }
     }
@@ -118,7 +117,7 @@ class UpdatePeople extends Component {
         };
 
         // Test Create / update et sauvegarde
-        if (this.props.match.params.id == undefined) {
+        if (this.props.match.params.id === undefined) {
             this.ref.add({
                 fullname: this.state.fullname,
                 standardArrival: Array.from( this.state.standardArrival.keys()),
@@ -143,7 +142,7 @@ class UpdatePeople extends Component {
     render() {
         return (
             <div style={{marginTop: 10}}>
-                <h3>{this.props.match.params.id == undefined ? "Création élève" : "MàJ élève" }</h3>
+                <h3>{this.props.match.params.id === undefined ? "Création élève" : "MàJ élève" }</h3>
                 <form onSubmit={this.onSubmit}>
                     <div className="form-group">
                         <label>Nom:  </label>

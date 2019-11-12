@@ -2,11 +2,9 @@ import 'date-fns';
 import React, { Component } from 'react'
 import DateFnsUtils from '@date-io/date-fns';
 import { Link } from 'react-router-dom';
-import {constants} from '../common';
 import firebase from '../firebase';
 import {
   MuiPickersUtilsProvider,
-  KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 
@@ -81,7 +79,7 @@ class Presence extends Component {
 
 
 
-                    if(that.state.selectedDate != '') {
+                    if(that.state.selectedDate !== '') {
                         if (that.state.selectedDate.getTime() == currentData.presenceDay.seconds*1000) {
 
                             newPresence.push(currentData);
@@ -130,7 +128,7 @@ class Presence extends Component {
 
         var presenceRefPerson;
 
-        if (this.state.selectedPersonId == '') {
+        if (this.state.selectedPersonId === '') {
             presenceRefPerson = this.presenceRef;
         } else {
             presenceRefPerson = this.presenceRef.where("personId", "==", this.state.selectedPersonId);
@@ -242,7 +240,7 @@ class Presence extends Component {
                     <tbody>
                         {this.state.presences.map((presence) => (
                             <tr key={presence.id}>
-                                <td>{this.state.peoples.filter((people) => (people.id == presence.personId)).map((people) => people.fullname)}</td>
+                                <td>{this.state.peoples.filter((people) => (people.id === presence.personId)).map((people) => people.fullname)}</td>
                                 <td>{presence.presenceDay ? (this.displayFormatedDate(presence.presenceDay)) : ("-")}</td>
                                 <td>{presence.arrival ? (this.displayFormatedTime(presence.arrival)) : ("-")}</td>
                                 <td>{presence.departure ? (this.displayFormatedTime(presence.departure)) : ("-")}</td>
