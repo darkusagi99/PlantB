@@ -133,7 +133,11 @@ class ReportPresence extends Component {
         }
 
 
-        getDaysInMonth = () => (new Array(31)).fill('').map((v,i)=>new Date((new Date).getFullYear(),(new Date).getMonth(),i+1)).filter(v=>v.getMonth()===(new Date).getMonth())
+        getDaysInMonth(refDate) {
+            return (new Array(31)).fill('')
+                .map((v,i)=>new Date(refDate.getFullYear(),refDate.getMonth(),i+1))
+                .filter(v=>v.getMonth()===refDate.getMonth())
+        }
 
 
         displayFormatedTime(date) {
@@ -187,7 +191,7 @@ class ReportPresence extends Component {
                          <tr>
 
                              <th>Elève</th>
-                             {this.getDaysInMonth().map((dayInMonth) => (
+                             {(this.getDaysInMonth(this.state.selectedDate)).map((dayInMonth) => (
                                 <th class={this.isUnworkedDay(dayInMonth)}>{dayInMonth.getDate()}</th>
                              ))}
                          </tr>
@@ -197,7 +201,7 @@ class ReportPresence extends Component {
                     {this.state.peoples.map((people) => (
                          <tr>
                             <td>{people.fullname}</td>
-                            {this.getDaysInMonth().map((dayInMonth) => (
+                            {(this.getDaysInMonth(this.state.selectedDate)).map((dayInMonth) => (
                                      <td class={this.isUnworkedDay(dayInMonth)}>{this.state.presences
                                         .filter((presence) => (people.id == presence.personId))
                                         .filter((presence) => (dayInMonth.getFullYear() == new Date(presence.presenceDay).getFullYear()))

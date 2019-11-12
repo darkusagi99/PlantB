@@ -55,7 +55,7 @@ class App extends Component {
                                     <Link to={'/report/month'} className="nav-link">Rapport mensuel</Link>
                                   </li>
                                 </ul>
-                                <span class="badge badge-pill badge-secondary">v1.2</span>
+                                <span class="badge badge-pill badge-secondary">v1.3</span>
                                 <button  class="btn btn-secondary" onClick={signOut}>Deconnecter</button>
                               </div>
                             </nav> <br/>
