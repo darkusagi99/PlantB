@@ -43,9 +43,14 @@ class People extends Component {
     // Méthode mise en forme affichage
     affichageJours(listJours) {
 
+
+        var day_of_week = new Date().getDay();
+        var list = ["MONDAY","TUESDAY","THURSDAY","FRIDAY"];
+
         var listeRetour = '';
 
-        listJours.forEach(
+        listJours.sort(function(a,b) { return list.indexOf(a) > list.indexOf(b); })
+        .forEach(
             function(element) {
                 var elementTxt = element;
 
