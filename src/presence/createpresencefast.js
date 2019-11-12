@@ -140,6 +140,7 @@ class CreateFastPresence extends Component {
 
         this.presenceRef
         .where("personId", "==", e.target.value)
+        .where("presenceDay", "==", this.state.selectedDate)
         //.where("presenceDay.seconds", "==", 1573426800)
         .get()
         .then(function(querySnapshot) {
@@ -192,6 +193,7 @@ class CreateFastPresence extends Component {
 
         this.presenceRef
         .where("personId", "==", this.state.personId)
+        .where("presenceDay", "==", date)
         .get()
         .then(function(querySnapshot) {
             if(!querySnapshot.empty)  {
@@ -200,27 +202,22 @@ class CreateFastPresence extends Component {
                     var currentData = doc.data();
                     currentData.id = doc.id;
 
-
                     console.log(" => ", that.state.selectedDate.getTime());
                     console.log(" => ", currentData.presenceDay.seconds*1000);
 
-                    if(that.state.selectedDate.getTime() == currentData.presenceDay.seconds*1000) {
+                    that.setState({
+                        presenceId : doc.id,
+                        personId : currentData.personId,
+                        selectedDate : new Date(currentData.presenceDay.seconds*1000),
+                        arrivalTime : new Date(currentData.arrival.seconds*1000),
+                        depatureTime : new Date(currentData.departure.seconds*1000),
+                        hasMeal : currentData.hasMeal
+                    });
 
-                        that.setState({
-                            presenceId : doc.id,
-                            personId : currentData.personId,
-                            selectedDate : new Date(currentData.presenceDay.seconds*1000),
-                            arrivalTime : new Date(currentData.arrival.seconds*1000),
-                            depatureTime : new Date(currentData.departure.seconds*1000),
-                            hasMeal : currentData.hasMeal
-                        });
+                    currentData.hasMeal ? that.refs.hasMeal.classList.add('active') : that.refs.hasMeal.classList.remove('active') ;
+                    currentData.hasMeal ? that.refs.hasMeal.innerHTML = "Avec Repas" : that.refs.hasMeal.innerHTML = "Sans Repas" ;
 
-                        currentData.hasMeal ? that.refs.hasMeal.classList.add('active') : that.refs.hasMeal.classList.remove('active') ;
-                        currentData.hasMeal ? that.refs.hasMeal.innerHTML = "Avec Repas" : that.refs.hasMeal.innerHTML = "Sans Repas" ;
-
-                        console.log(doc.id, " => ", doc.data());
-
-                    }
+                    console.log(doc.id, " => ", doc.data());
                 });
             }
         });

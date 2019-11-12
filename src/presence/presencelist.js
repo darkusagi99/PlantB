@@ -37,7 +37,6 @@ class Presence extends Component {
     // Méthodes pour le chargement des présences
     componentDidMount() {
 
-        var newPresence = [];
         var newPeople = [];
         var that = this;
 
@@ -65,10 +64,18 @@ class Presence extends Component {
 
         var that = this;
         var newPresence = [];
+        var presenceRefPerson;
 
-        this.presenceRef
-        .where("personId", "==", e.target.value)
-        //.where("presenceDay.seconds", "==", 1573426800)
+        if (this.state.selectedDate !== '') {
+            presenceRefPerson = this.presenceRef
+                                        .where("personId", "==", e.target.value)
+                                        .where("presenceDay", "==", this.state.selectedDate);
+        } else {
+            presenceRefPerson = this.presenceRef
+                                        .where("personId", "==", e.target.value);
+        }
+
+        presenceRefPerson
         .get()
         .then(function(querySnapshot) {
             if(!querySnapshot.empty) {
@@ -77,32 +84,13 @@ class Presence extends Component {
                     var currentData = doc.data();
                     currentData.id = doc.id;
 
+                    newPresence.push(currentData);
 
+                    that.setState({
+                    presences : newPresence
+                    });
 
-                    if(that.state.selectedDate !== '') {
-                        if (that.state.selectedDate.getTime() == currentData.presenceDay.seconds*1000) {
-
-                            newPresence.push(currentData);
-
-                            that.setState({
-                            presences : newPresence
-                            });
-
-                            console.log(doc.id, " => ", doc.data());
-
-                        }
-                    } else {
-
-                        newPresence.push(currentData);
-
-                        that.setState({
-                        presences : newPresence
-                        });
-
-                        console.log(doc.id, " => ", doc.data());
-
-                    }
-
+                    console.log(doc.id, " => ", doc.data());
                 });
             }
         });
@@ -129,9 +117,9 @@ class Presence extends Component {
         var presenceRefPerson;
 
         if (this.state.selectedPersonId === '') {
-            presenceRefPerson = this.presenceRef;
+            presenceRefPerson = this.presenceRef.where("presenceDay", "==", date);
         } else {
-            presenceRefPerson = this.presenceRef.where("personId", "==", this.state.selectedPersonId);
+            presenceRefPerson = this.presenceRef.where("personId", "==", this.state.selectedPersonId).where("presenceDay", "==", date);
         }
 
         presenceRefPerson
@@ -142,21 +130,11 @@ class Presence extends Component {
                     // doc.data() is never undefined for query doc snapshots
                     var currentData = doc.data();
                     currentData.id = doc.id;
+                    newPresence.push(currentData);
 
-                    console.log(" => ", that.state.selectedDate.getTime());
-                    console.log(" => ", currentData.presenceDay.seconds*1000);
-
-                    if(that.state.selectedDate.getTime() == currentData.presenceDay.seconds*1000) {
-
-                        newPresence.push(currentData);
-
-                        that.setState({
-                            presences : newPresence
-                        });
-
-                        console.log(doc.id, " => ", doc.data());
-
-                    }
+                    that.setState({
+                        presences : newPresence
+                    });
                 });
             }
         });
