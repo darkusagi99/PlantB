@@ -71,40 +71,35 @@ class CreateFastPresence extends Component {
         });
 
         // Initialisation des heures
-        this.state.arrivalTime.setHours(7);
-        this.state.arrivalTime.setMinutes(0);
-        this.state.arrivalTime.setSeconds(0);
-        this.state.arrivalTime.setMilliseconds(0);
-        this.state.depatureTime.setHours(16);
-        this.state.depatureTime.setMinutes(30);
-        this.state.arrivalTime.setSeconds(0);
-        this.state.arrivalTime.setMilliseconds(0);
+        this.resetHours();
 
         if (this.props.match.params.id !== undefined) {
-
-        this.presenceRef.doc(this.props.match.params.id).get()
-        .then(function(doc) {
-            // doc.data() is never undefined for query doc snapshots
-            var currentData = doc.data();
-            currentData.id = doc.id;
-
-            that.setState({
-                presenceId : doc.id,
-                personId : currentData.personId,
-                selectedDate : new Date(currentData.presenceDay.seconds*1000),
-                arrivalTime : new Date(currentData.arrival.seconds*1000),
-                depatureTime : new Date(currentData.departure.seconds*1000),
-                hasMeal : currentData.hasMeal,
-                previousPresence: ''
-            });
-
-            currentData.hasMeal ? that.refs.hasMeal.classList.add('active') : that.refs.hasMeal.classList.remove('active') ;
-            currentData.hasMeal ? that.refs.hasMeal.innerHTML = "Avec Repas" : that.refs.hasMeal.innerHTML = "Sans Repas" ;
-
-            console.log(doc.id, " => ", doc.data());
-        });
+            this.presenceRef.doc(this.props.match.params.id).get()
+            .then(doc => this.loadPresence(doc, that));
 
         }
+
+    }
+
+    loadPresence(doc, that) {
+        // doc.data() is never undefined for query doc snapshots
+        var currentData = doc.data();
+        currentData.id = doc.id;
+
+        that.setState({
+            presenceId : doc.id,
+            personId : currentData.personId,
+            selectedDate : new Date(currentData.presenceDay.seconds*1000),
+            arrivalTime : new Date(currentData.arrival.seconds*1000),
+            depatureTime : new Date(currentData.departure.seconds*1000),
+            hasMeal : currentData.hasMeal,
+            previousPresence: ''
+        });
+
+        currentData.hasMeal ? that.refs.hasMeal.classList.add('active') : that.refs.hasMeal.classList.remove('active') ;
+        currentData.hasMeal ? that.refs.hasMeal.innerHTML = "Avec Repas" : that.refs.hasMeal.innerHTML = "Sans Repas" ;
+
+        console.log(doc.id, " => ", doc.data());
 
     }
 
@@ -145,34 +140,7 @@ class CreateFastPresence extends Component {
         .get()
         .then(function(querySnapshot) {
             if(!querySnapshot.empty) {
-                querySnapshot.forEach(function(doc) {
-                    // doc.data() is never undefined for query doc snapshots
-                    var currentData = doc.data();
-                    currentData.id = doc.id;
-
-
-                    console.log(" => ", that.state.selectedDate.getTime());
-                    console.log(" => ", currentData.presenceDay.seconds*1000);
-
-                    if(that.state.selectedDate.getTime() == currentData.presenceDay.seconds*1000) {
-
-                        that.setState({
-                            presenceId : doc.id,
-                            personId : currentData.personId,
-                            selectedDate : new Date(currentData.presenceDay.seconds*1000),
-                            arrivalTime : new Date(currentData.arrival.seconds*1000),
-                            depatureTime : new Date(currentData.departure.seconds*1000),
-                            hasMeal : currentData.hasMeal
-                        });
-
-
-                        currentData.hasMeal ? that.refs.hasMeal.classList.add('active') : that.refs.hasMeal.classList.remove('active') ;
-                        currentData.hasMeal ? that.refs.hasMeal.innerHTML = "Avec Repas" : that.refs.hasMeal.innerHTML = "Sans Repas" ;
-
-                        console.log(doc.id, " => ", doc.data());
-
-                    }
-                });
+                querySnapshot.forEach(doc => that.loadPresence(doc, that));
             }
         });
 
@@ -186,8 +154,6 @@ class CreateFastPresence extends Component {
 
         var that = this;
 
-        console.log("SearchDate => ", Math.round((date).getTime() / 1000));
-
         // RAZ des heures
         this.resetHours();
 
@@ -197,28 +163,7 @@ class CreateFastPresence extends Component {
         .get()
         .then(function(querySnapshot) {
             if(!querySnapshot.empty)  {
-                querySnapshot.forEach(function(doc) {
-                    // doc.data() is never undefined for query doc snapshots
-                    var currentData = doc.data();
-                    currentData.id = doc.id;
-
-                    console.log(" => ", that.state.selectedDate.getTime());
-                    console.log(" => ", currentData.presenceDay.seconds*1000);
-
-                    that.setState({
-                        presenceId : doc.id,
-                        personId : currentData.personId,
-                        selectedDate : new Date(currentData.presenceDay.seconds*1000),
-                        arrivalTime : new Date(currentData.arrival.seconds*1000),
-                        depatureTime : new Date(currentData.departure.seconds*1000),
-                        hasMeal : currentData.hasMeal
-                    });
-
-                    currentData.hasMeal ? that.refs.hasMeal.classList.add('active') : that.refs.hasMeal.classList.remove('active') ;
-                    currentData.hasMeal ? that.refs.hasMeal.innerHTML = "Avec Repas" : that.refs.hasMeal.innerHTML = "Sans Repas" ;
-
-                    console.log(doc.id, " => ", doc.data());
-                });
+                querySnapshot.forEach(doc => that.loadPresence(doc, that));
             }
         });
 
