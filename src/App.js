@@ -3,6 +3,11 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
+import Button from 'react-bootstrap/Button';
+import Badge from 'react-bootstrap/Badge';
+
 import People from './people/peoplelist';
 import UpdatePeople from './people/updatepeople';
 import Presence from './presence/presencelist';
@@ -41,27 +46,21 @@ class App extends Component {
             ? <div>
                     <Router>
                           <div className="container">
-                            <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                              <Link to={'/'} className="navbar-brand">Plant B</Link>
-                              <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                                <ul className="navbar-nav mr-auto">
-                                  <li className="nav-item">
-                                    <Link to={'/people/list'} className="nav-link">Elèves</Link>
-                                  </li>
-                                  <li className="nav-item">
-                                    <Link to={'/presence/list'} className="nav-link">Présences</Link>
-                                  </li>
-                                  <li className="nav-item">
-                                    <Link to={'/report/month'} className="nav-link">Rapport mensuel</Link>
-                                  </li>
-                                  <li className="nav-item">
-                                    <Link to={'/admin/initday'} className="nav-link">Initialiser journée</Link>
-                                  </li>
-                                </ul>
-                                <span className="badge badge-pill badge-secondary">v1.5</span>
-                                <button  className="btn btn-secondary" onClick={signOut}>Deconnecter</button>
-                              </div>
-                            </nav> <br/>
+                            <Navbar bg="light" expand="lg">
+                              <Navbar.Brand href="/">PlantB</Navbar.Brand>
+                              <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                              <Navbar.Collapse id="basic-navbar-nav">
+                                <Nav className="mr-auto">
+                                  <Nav.Link href="/people/list">Elèves</Nav.Link>
+                                  <Nav.Link href="/presence/list">Présences</Nav.Link>
+                                  <Nav.Link href="/report/month">Rapport mensuel</Nav.Link>
+                                  <Nav.Link href="/admin/initday">Initialiser journée</Nav.Link>
+                                </Nav>
+                                <Nav>
+                                  <Button className="btn btn-secondary" onClick={signOut}>Deconnecter</Button>
+                                </Nav>
+                              </Navbar.Collapse>
+                            </Navbar> <br/>
                             <Switch>
                                 <Route path='/people/create' component={ UpdatePeople } />
                                 <Route path='/people/list' component={ People } />
