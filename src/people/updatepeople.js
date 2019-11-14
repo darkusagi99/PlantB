@@ -153,30 +153,30 @@ class UpdatePeople extends Component {
                     </div>
                     <div className="form-group">
                         <div class="btn-group" role="group" aria-label="Basic example">
-                            <button type="button" class="btn btn-light disabled">Matin</button>
-                            <button type="button" class="btn btn-secondary" value="MONDAY" ref="arrivalMonday"  onClick={this.onChangeButtonValue("standardArrival", this)} >Lundi</button>
-                            <button type="button" class="btn btn-secondary" value="TUESDAY" ref="arrivalTuesday"  onClick={this.onChangeButtonValue("standardArrival", this)} >Mardi</button>
-                            <button type="button" class="btn btn-secondary" value="THURSDAY" ref="arrivalThursday"  onClick={this.onChangeButtonValue("standardArrival", this)} >Jeudi</button>
-                            <button type="button" class="btn btn-secondary" value="FRIDAY" ref="arrivalFriday"  onClick={this.onChangeButtonValue("standardArrival", this)} >Vendredi</button>
+                            <button type="button" className="btn btn-light disabled">Matin</button>
+                            <button type="button" className="btn btn-secondary" value="MONDAY" ref="arrivalMonday"  onClick={this.onChangeButtonValue("standardArrival", this)} >Lundi</button>
+                            <button type="button" className="btn btn-secondary" value="TUESDAY" ref="arrivalTuesday"  onClick={this.onChangeButtonValue("standardArrival", this)} >Mardi</button>
+                            <button type="button" className="btn btn-secondary" value="THURSDAY" ref="arrivalThursday"  onClick={this.onChangeButtonValue("standardArrival", this)} >Jeudi</button>
+                            <button type="button" className="btn btn-secondary" value="FRIDAY" ref="arrivalFriday"  onClick={this.onChangeButtonValue("standardArrival", this)} >Vendredi</button>
                         </div>
                     </div>
                     <div className="form-group">
                         <div class="btn-group" role="group" aria-label="Basic example">
-                            <button type="button" class="btn btn-light disabled">Soir</button>
-                            <button type="button" class="btn btn-secondary" value="MONDAY" ref="leaveMonday"  onClick={this.onChangeButtonValue("standardDeparture", this)} >Lundi</button>
-                            <button type="button" class="btn btn-secondary" value="TUESDAY" ref="leaveTuesday"  onClick={this.onChangeButtonValue("standardDeparture", this)} >Mardi</button>
-                            <button type="button" class="btn btn-secondary" value="THURSDAY" ref="leaveThursday"  onClick={this.onChangeButtonValue("standardDeparture", this)} >Jeudi</button>
-                            <button type="button" class="btn btn-secondary" value="FRIDAY" ref="leaveFriday"  onClick={this.onChangeButtonValue("standardDeparture", this)} >Vendredi</button>
+                            <button type="button" className="btn btn-light disabled">Soir</button>
+                            <button type="button" className="btn btn-secondary" value="MONDAY" ref="leaveMonday"  onClick={this.onChangeButtonValue("standardDeparture", this)} >Lundi</button>
+                            <button type="button" className="btn btn-secondary" value="TUESDAY" ref="leaveTuesday"  onClick={this.onChangeButtonValue("standardDeparture", this)} >Mardi</button>
+                            <button type="button" className="btn btn-secondary" value="THURSDAY" ref="leaveThursday"  onClick={this.onChangeButtonValue("standardDeparture", this)} >Jeudi</button>
+                            <button type="button" className="btn btn-secondary" value="FRIDAY" ref="leaveFriday"  onClick={this.onChangeButtonValue("standardDeparture", this)} >Vendredi</button>
 
                         </div>
                     </div>
                     <div className="form-group">
                         <div class="btn-group" role="group" aria-label="Basic example">
-                            <button type="button" class="btn btn-light disabled">Repas</button>
-                            <button type="button" class="btn btn-secondary" value="MONDAY" ref="mealMonday"  onClick={this.onChangeButtonValue("standardMeal", this)} >Lundi</button>
-                            <button type="button" class="btn btn-secondary" value="TUESDAY" ref="mealTuesday"  onClick={this.onChangeButtonValue("standardMeal", this)} >Mardi</button>
-                            <button type="button" class="btn btn-secondary" value="THURSDAY" ref="mealThursday"  onClick={this.onChangeButtonValue("standardMeal", this)} >Jeudi</button>
-                            <button type="button" class="btn btn-secondary" value="FRIDAY" ref="mealFriday"  onClick={this.onChangeButtonValue("standardMeal", this)} >Vendredi</button>
+                            <button type="button" className="btn btn-light disabled">Repas</button>
+                            <button type="button" className="btn btn-secondary" value="MONDAY" ref="mealMonday"  onClick={this.onChangeButtonValue("standardMeal", this)} >Lundi</button>
+                            <button type="button" className="btn btn-secondary" value="TUESDAY" ref="mealTuesday"  onClick={this.onChangeButtonValue("standardMeal", this)} >Mardi</button>
+                            <button type="button" className="btn btn-secondary" value="THURSDAY" ref="mealThursday"  onClick={this.onChangeButtonValue("standardMeal", this)} >Jeudi</button>
+                            <button type="button" className="btn btn-secondary" value="FRIDAY" ref="mealFriday"  onClick={this.onChangeButtonValue("standardMeal", this)} >Vendredi</button>
                         </div>
                     </div>
 

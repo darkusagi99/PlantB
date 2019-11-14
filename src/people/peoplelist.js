@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
-import firebase from '../firebase';
+import PeopleContext from './peoplecontext';
 
 class People extends Component {
+
+    static contextType = PeopleContext;
 
     // Constructeur
     constructor(props) {
@@ -10,34 +12,25 @@ class People extends Component {
         super(props);
 
         this.affichageJours = this.affichageJours.bind(this);
-
-        this.ref = firebase.firestore().collection('peoples');
         this.state = { peoples: [] };
     }
 
     // Chargement lors du montage
     componentDidMount() {
 
-        var newPeople = [];
-        var that = this;
-
-        this.ref.get()
-        .then(function(querySnapshot) {
-            querySnapshot.forEach(function(doc) {
-                // doc.data() is never undefined for query doc snapshots
-                var currentData = doc.data();
-                currentData.id = doc.id;
-
-                newPeople.push(currentData);
-
-                that.setState({
-                    peoples: newPeople
-                });
-
-                console.log(doc.id, " => ", doc.data());
-            });
+        this.setState({
+            peoples : this.context
         });
 
+    }
+
+    componentDidUpdate() {
+        // Chargement liste personnes
+        if (this.context !== this.state.peoples) {
+            this.setState({
+                peoples : this.context
+            });
+        }
     }
 
     // Méthode mise en forme affichage

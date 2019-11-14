@@ -13,6 +13,7 @@ import Presence from './presence/presencelist';
 import CreateFastPresence from './presence/createpresencefast';
 import ReportPresence from './report/monthreport';
 import InitDay from './admin/initday';
+import PeopleContext from './people/peoplecontext';
 import './App.css';
 
 import withFirebaseAuth from 'react-with-firebase-auth'
@@ -40,8 +41,42 @@ const IfUnAuthed = () => {
   );
 };
 
-
 class App extends Component {
+
+      // Constructeur
+      constructor(props) {
+
+          super(props);
+
+          this.peopleRef = firebase.firestore().collection('peoples');
+          this.state = { peoples: [] };
+      }
+
+      // Méthodes pour le chargement des présences
+      componentDidMount() {
+
+          var newPeople = [];
+          var that = this;
+
+          // Chargement des personnes
+          this.peopleRef.get()
+          .then(function(querySnapshot) {
+              querySnapshot.forEach(function(doc) {
+                  // doc.data() is never undefined for query doc snapshots
+                  var currentData = doc.data();
+                  currentData.id = doc.id;
+
+                  newPeople.push(currentData);
+              });
+
+              // MAJ de l'etat
+              that.setState({
+                  peoples: newPeople
+              });
+              that.forceUpdate();
+          });
+
+      }
 
       render() {
 
@@ -51,6 +86,8 @@ class App extends Component {
           } = this.props;
 
         return (
+
+        <PeopleContext.Provider value={this.state.peoples}>
         <div>
 
         {
@@ -93,6 +130,7 @@ class App extends Component {
              IfUnAuthed()
         }
         </div>
+        </PeopleContext.Provider>
         );
       }
 }

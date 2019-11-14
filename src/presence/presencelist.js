@@ -7,8 +7,10 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
+import PeopleContext from '../people/peoplecontext';
 
 class Presence extends Component {
+    static contextType = PeopleContext;
 
     // Constructeur
     constructor(props) {
@@ -37,27 +39,20 @@ class Presence extends Component {
     // Méthodes pour le chargement des présences
     componentDidMount() {
 
-        var newPeople = [];
-        var that = this;
-
-        // Chargement des personnes
-        this.peopleRef.get()
-        .then(function(querySnapshot) {
-            querySnapshot.forEach(function(doc) {
-                // doc.data() is never undefined for query doc snapshots
-                var currentData = doc.data();
-                currentData.id = doc.id;
-
-                newPeople.push(currentData);
-
-                that.setState({
-                    peoples: newPeople
-                });
-
-                console.log(doc.id, " => ", doc.data());
-            });
+        // Chargement liste personnes
+        this.setState({
+            peoples : this.context
         });
 
+    }
+
+    componentDidUpdate() {
+        // Chargement liste personnes
+        if (this.context !== this.state.peoples) {
+            this.setState({
+                peoples : this.context
+            });
+        }
     }
 
     handlePersonChange = e => {
