@@ -20,11 +20,33 @@ import withFirebaseAuth from 'react-with-firebase-auth'
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 
+import {
+  FirebaseAuthProvider,
+  FirebaseAuthConsumer
+} from "@react-firebase/auth";
 
-const firebaseAppAuth = firebase.auth();const providers = {
+
+const firebaseAppAuth = firebase.auth();
+
+const providers = {
   googleProvider: new firebase.auth.GoogleAuthProvider(),
 };
 
+const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
+
+const IfUnAuthed = () => {
+  return (
+      <div className="text-center">
+          <button className="btn btn-secondary"
+            onClick={() => {
+              const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
+              firebase.auth().signInWithRedirect(googleAuthProvider);
+            }}
+          >Sign in with Google
+          </button>
+      </div>
+  );
+};
 
 
 class App extends Component {
@@ -78,13 +100,7 @@ class App extends Component {
                     </Router>
                 </div>
             :
-             <div className="App">
-                    <header className="App-header">
-                      <img src={logo} className="App-logo" alt="logo" />
-                      <p>Please sign in.</p>
-                      <button onClick={signInWithGoogle}>Connexion avec Google</button>
-                    </header>
-             </div>
+             IfUnAuthed()
         }
         </div>
         );
