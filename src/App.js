@@ -62,17 +62,16 @@ class App extends Component {
             ? <div>
                     <Router>
                           <div className="container">
-                            <Navbar bg="light" expand="lg">
-
-                              <Link to={'/'} className="navbar-brand">PlantB</Link>
+                            <Navbar collapseOnSelect bg="light" expand="lg">
+                              <Nav.Link eventKey="0" as={Link} to="/" className="navbar-brand">PlantB</Nav.Link>
                               <Navbar.Toggle aria-controls="basic-navbar-nav" />
                               <Navbar.Collapse id="basic-navbar-nav">
                                 <Nav className="mr-auto">
 
-                                  <Link to={'/people/list'} className="nav-link">Elèves</Link>
-                                  <Link to={'/presence/list'} className="nav-link">Présences</Link>
-                                  <Link to={'/report/month'} className="nav-link">Rapport mensuel</Link>
-                                  <Link to={'/admin/initday'} className="nav-link">Initialiser journée</Link>
+                                  <Nav.Link eventKey="1" as={Link} to="/people/list">Elèves</Nav.Link>
+                                  <Nav.Link eventKey="2" as={Link} to="/presence/list">Présences</Nav.Link>
+                                  <Nav.Link eventKey="3" as={Link} to="/report/month">Rapport mensuel</Nav.Link>
+                                  <Nav.Link eventKey="4" as={Link} to="/admin/initday">Initialiser journée</Nav.Link>
                                 </Nav>
                                 <Nav>
                                   <Button className="btn btn-secondary" onClick={signOut}>Deconnecter</Button>
