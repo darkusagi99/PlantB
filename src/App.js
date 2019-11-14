@@ -13,7 +13,6 @@ import Presence from './presence/presencelist';
 import CreateFastPresence from './presence/createpresencefast';
 import ReportPresence from './report/monthreport';
 import InitDay from './admin/initday';
-import logo from './logo.svg';
 import './App.css';
 
 import withFirebaseAuth from 'react-with-firebase-auth'
@@ -26,8 +25,6 @@ const firebaseAppAuth = firebase.auth();
 const providers = {
   googleProvider: new firebase.auth.GoogleAuthProvider(),
 };
-
-const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
 
 const IfUnAuthed = () => {
   return (
@@ -50,8 +47,7 @@ class App extends Component {
 
           const {
             user,
-            signOut,
-            signInWithGoogle,
+            signOut
           } = this.props;
 
         return (
