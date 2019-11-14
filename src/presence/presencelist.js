@@ -170,12 +170,12 @@ class Presence extends Component {
                 <div style={{marginTop: 10}}>
                     <h4>Filtres</h4>
                     <form onSubmit={this.onSubmit}>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <label class="input-group-text" for="inputGroupPerson">Eleve</label>
+                        <div className="input-group mb-3">
+                            <div className="input-group-prepend">
+                                <label className="input-group-text" htmlFor="inputGroupPerson">Eleve</label>
                             </div>
 
-                            <select class="custom-select" id="inputGroupPerson" value={this.state.personId} onChange={this.handlePersonChange}>
+                            <select className="custom-select" id="inputGroupPerson" value={this.state.personId} onChange={this.handlePersonChange}>
 
                                 <option value="">Choix...</option>
                                 {this.state.peoples.map((people) => (
@@ -204,7 +204,7 @@ class Presence extends Component {
                     </form>
                 </div>
 
-                <table class="table table-striped">
+                <table className="table table-striped">
                     <thead>
                         <tr>
                             <th scope="col">Nom</th>

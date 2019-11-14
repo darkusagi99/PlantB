@@ -241,16 +241,16 @@ class CreateFastPresence extends Component {
             <div style={{marginTop: 10}}>
                 <h3>Presence</h3>
                 <form onSubmit={this.onSubmit}>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <label class="input-group-text" for="inputGroupPerson">Eleve</label>
+                    <div className="input-group mb-3">
+                        <div className="input-group-prepend">
+                            <label className="input-group-text" htmlFor="inputGroupPerson">Eleve</label>
                         </div>
 
-                        <select class="custom-select" id="inputGroupPerson" value={this.state.personId} onChange={this.handlePersonChange}>
+                        <select className="custom-select" id="inputGroupPerson" value={this.state.personId} onChange={this.handlePersonChange}>
 
-                            <option selected>Choix...</option>
+                            <option value=''>Choix...</option>
                             {this.state.peoples.map((people) => (
-                                <option value={people.id} >{people.fullname}</option>
+                                <option value={people.id} key={people.id}>{people.fullname}</option>
                             ))}
                         </select>
                     </div>
@@ -303,8 +303,8 @@ class CreateFastPresence extends Component {
                         </MuiPickersUtilsProvider>
                     </div>
                     <div className="form-group">
-                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                            <button type="button" class="btn btn-secondary" onClick={this.handleMealChange} ref="hasMeal">Sans Repas</button>
+                        <div className="btn-group btn-group-toggle" data-toggle="buttons">
+                            <button type="button" className="btn btn-secondary" onClick={this.handleMealChange} ref="hasMeal">Sans Repas</button>
                         </div>
                     </div>
                     <div className="form-group">

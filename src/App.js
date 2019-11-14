@@ -58,8 +58,8 @@ class App extends Component {
                                     <Link to={'/admin/initday'} className="nav-link">Initialiser journée</Link>
                                   </li>
                                 </ul>
-                                <span class="badge badge-pill badge-secondary">v1.5</span>
-                                <button  class="btn btn-secondary" onClick={signOut}>Deconnecter</button>
+                                <span className="badge badge-pill badge-secondary">v1.5</span>
+                                <button  className="btn btn-secondary" onClick={signOut}>Deconnecter</button>
                               </div>
                             </nav> <br/>
                             <Switch>

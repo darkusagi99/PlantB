@@ -182,40 +182,40 @@ class ReportPresence extends Component {
                     </form>
                 </div>
 
-                <table class="table table-striped">
+                <table className="table table-striped">
                 <thead>
                      <tr>
 
                          <th>Elève</th>
                          {(this.getDaysInMonth(this.state.selectedDate)).map((dayInMonth) => (
-                            <th class={this.isUnworkedDay(dayInMonth)}>{dayInMonth.getDate()}</th>
+                            <th className={this.isUnworkedDay(dayInMonth)} key={dayInMonth.getTime()}>{dayInMonth.getDate()}</th>
                          ))}
                      </tr>
                 </thead>
                 <tbody>
 
-                {this.state.peoples.map((people) => (
-                     <tr>
-                        <td>{people.fullname}</td>
-                        {(this.getDaysInMonth(this.state.selectedDate)).map((dayInMonth) => (
-                                 <td class={this.isUnworkedDay(dayInMonth)}>{this.state.presences
-                                    .filter((presence) => (people.id === presence.personId))
-                                    .filter((presence) => (dayInMonth.getFullYear() === new Date(presence.presenceDay).getFullYear()
-                                                            && dayInMonth.getMonth() === new Date(presence.presenceDay).getMonth()
-                                                            && dayInMonth.getDate() === new Date(presence.presenceDay).getDate()))
-                                    .map((presence) => (
-                                            <p>
-                                                {presence.arrival ? (this.displayFormatedTime(presence.arrival)) : ("-")}-{presence.departure ? (this.displayFormatedTime(presence.departure)) : ("-")}
-                                                <br />{presence.hasMeal ? ("Avec Repas") : ("Sans Repas")}
+                    {this.state.peoples.map((people) => (
+                         <tr key={people.id}>
+                            <td>{people.fullname}</td>
+                            {(this.getDaysInMonth(this.state.selectedDate)).map((dayInMonth) => (
+                                     <td className={this.isUnworkedDay(dayInMonth)} key={dayInMonth.getTime()}>{this.state.presences
+                                        .filter((presence) => (people.id === presence.personId))
+                                        .filter((presence) => (dayInMonth.getFullYear() === new Date(presence.presenceDay).getFullYear()
+                                                                && dayInMonth.getMonth() === new Date(presence.presenceDay).getMonth()
+                                                                && dayInMonth.getDate() === new Date(presence.presenceDay).getDate()))
+                                        .map((presence) => (
+                                                <p key={presence.id}>
+                                                    {presence.arrival ? (this.displayFormatedTime(presence.arrival)) : ("-")}-{presence.departure ? (this.displayFormatedTime(presence.departure)) : ("-")}
+                                                    <br />{presence.hasMeal ? ("Avec Repas") : ("Sans Repas")}
 
-                                                <br /><Link to={'/presence/update/' + presence.id} className="nav-link">MàJ</Link>
-                                            </p>
-                                        )
-                                    )}
-                                 </td>
-                        ))}
-                     </tr>
-                ))}
+                                                    <br /><Link to={'/presence/update/' + presence.id} className="nav-link">MàJ</Link>
+                                                </p>
+                                            )
+                                        )}
+                                     </td>
+                            ))}
+                         </tr>
+                    ))}
 
                 </tbody>
                 </table>

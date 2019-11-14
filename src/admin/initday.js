@@ -3,7 +3,6 @@ import React, { Component } from 'react'
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
-  KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import firebase from '../firebase';
@@ -37,6 +36,11 @@ class InitDay extends Component {
             peoples: [],
             presenceList : []
         }
+
+    }
+
+    // Chargement lors du montage
+    componentDidMount() {
 
         this.resetHours();
 
@@ -89,7 +93,6 @@ class InitDay extends Component {
 
         var peoples = [];
         var presenceList = [];
-        var presenceToAdd = [];
 
         // Récupération du nom du jour
         var days = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];

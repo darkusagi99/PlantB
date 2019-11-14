@@ -43,8 +43,6 @@ class People extends Component {
     // Méthode mise en forme affichage
     affichageJours(listJours) {
 
-
-        var day_of_week = new Date().getDay();
         var list = ["MONDAY","TUESDAY","THURSDAY","FRIDAY"];
 
         var listeRetour = '';
@@ -88,7 +86,7 @@ class People extends Component {
                     <Link to={'/people/create'} className="nav-link">Ajouter élève</Link>
                 </div>
 
-                <table class="table table-striped">
+                <table className="table table-striped">
                     <thead>
                         <tr>
                             <th scope="col">Nom</th>
