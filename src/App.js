@@ -6,7 +6,6 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button';
-import Badge from 'react-bootstrap/Badge';
 
 import People from './people/peoplelist';
 import UpdatePeople from './people/updatepeople';
@@ -47,14 +46,16 @@ class App extends Component {
                     <Router>
                           <div className="container">
                             <Navbar bg="light" expand="lg">
-                              <Navbar.Brand href="/">PlantB</Navbar.Brand>
+
+                              <Link to={'/'} className="navbar-brand">PlantB</Link>
                               <Navbar.Toggle aria-controls="basic-navbar-nav" />
                               <Navbar.Collapse id="basic-navbar-nav">
                                 <Nav className="mr-auto">
-                                  <Nav.Link href="/people/list">Elèves</Nav.Link>
-                                  <Nav.Link href="/presence/list">Présences</Nav.Link>
-                                  <Nav.Link href="/report/month">Rapport mensuel</Nav.Link>
-                                  <Nav.Link href="/admin/initday">Initialiser journée</Nav.Link>
+
+                                  <Link to={'/people/list'} className="nav-link">Elèves</Link>
+                                  <Link to={'/presence/list'} className="nav-link">Présences</Link>
+                                  <Link to={'/report/month'} className="nav-link">Rapport mensuel</Link>
+                                  <Link to={'/admin/initday'} className="nav-link">Initialiser journée</Link>
                                 </Nav>
                                 <Nav>
                                   <Button className="btn btn-secondary" onClick={signOut}>Deconnecter</Button>
@@ -62,6 +63,18 @@ class App extends Component {
                               </Navbar.Collapse>
                             </Navbar> <br/>
                             <Switch>
+
+                                <Route path='/people/create' component={ UpdatePeople } />
+                                <Route path='/people/create' component={ UpdatePeople } />
+                                <Route path='/people/list' component={ People } />
+                                <Route path='/people/update/:id' component={ UpdatePeople } />
+                                <Route path='/presence/create' component={ CreateFastPresence } />
+                                <Route path='/presence/list' component={ Presence } />
+                                <Route path='/presence/update/:id' component={ CreateFastPresence } />
+                                <Route path='/report/month' component={ ReportPresence } />
+                                <Route path='#initday' component={ InitDay } />
+
+                                <Route path='/people/create' component={ UpdatePeople } />
                                 <Route path='/people/create' component={ UpdatePeople } />
                                 <Route path='/people/list' component={ People } />
                                 <Route path='/people/update/:id' component={ UpdatePeople } />

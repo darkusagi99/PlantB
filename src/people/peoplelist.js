@@ -100,9 +100,9 @@ class People extends Component {
                         {this.state.peoples.map((people) => (
                             <tr key={people.id}>
                                 <td>{people.fullname}</td>
-                                <td>Matin : {this.affichageJours(people.standardArrival)}</td>
-                                <td>Soir : {this.affichageJours(people.standardDeparture)}</td>
-                                <td>Repas : {this.affichageJours(people.standardMeal)}</td>
+                                <td>{this.affichageJours(people.standardArrival)}</td>
+                                <td>{this.affichageJours(people.standardDeparture)}</td>
+                                <td>{this.affichageJours(people.standardMeal)}</td>
                                 <td><Link to={'/people/update/' + people.id} className="nav-link">MàJ élève</Link></td>
                             </tr>
                         ))}

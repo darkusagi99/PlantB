@@ -239,7 +239,7 @@ class CreateFastPresence extends Component {
     render() {
         return (
             <div style={{marginTop: 10}}>
-                <h3>Presence</h3>
+                <h3>Présence</h3>
                 <form onSubmit={this.onSubmit}>
                     <div className="input-group mb-3">
                         <div className="input-group-prepend">
@@ -308,7 +308,7 @@ class CreateFastPresence extends Component {
                         </div>
                     </div>
                     <div className="form-group">
-                        <input type="submit" value="Save" className="btn btn-primary"/>
+                        <input type="submit" value="Enregistrer" className="btn btn-primary"/>
                     </div>
                 </form>
             </div>
