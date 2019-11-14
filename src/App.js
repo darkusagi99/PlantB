@@ -20,11 +20,6 @@ import withFirebaseAuth from 'react-with-firebase-auth'
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 
-import {
-  FirebaseAuthProvider,
-  FirebaseAuthConsumer
-} from "@react-firebase/auth";
-
 
 const firebaseAppAuth = firebase.auth();
 
