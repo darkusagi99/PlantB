@@ -8,6 +8,7 @@ import UpdatePeople from './people/updatepeople';
 import Presence from './presence/presencelist';
 import CreateFastPresence from './presence/createpresencefast';
 import ReportPresence from './report/monthreport';
+import InitDay from './admin/initday';
 import logo from './logo.svg';
 import './App.css';
 
@@ -53,8 +54,11 @@ class App extends Component {
                                   <li className="nav-item">
                                     <Link to={'/report/month'} className="nav-link">Rapport mensuel</Link>
                                   </li>
+                                  <li className="nav-item">
+                                    <Link to={'/admin/initday'} className="nav-link">Initialiser journée</Link>
+                                  </li>
                                 </ul>
-                                <span class="badge badge-pill badge-secondary">v1.4</span>
+                                <span class="badge badge-pill badge-secondary">v1.5</span>
                                 <button  class="btn btn-secondary" onClick={signOut}>Deconnecter</button>
                               </div>
                             </nav> <br/>
@@ -66,6 +70,7 @@ class App extends Component {
                                 <Route path='/presence/list' component={ Presence } />
                                 <Route path='/presence/update/:id' component={ CreateFastPresence } />
                                 <Route path='/report/month' component={ ReportPresence } />
+                                <Route path='/admin/initday' component={ InitDay } />
                                 <Route path='/' component={ CreateFastPresence } />
                             </Switch>
                           </div>
