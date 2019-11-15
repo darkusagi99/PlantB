@@ -17,7 +17,7 @@ class ReportPresence extends Component {
 
         // Bind des méthodes
         this.handleDateChange = this.handleDateChange.bind(this);
-        this.presenceRef = firebase.firestore().collection('presences');
+        this.journeeRef = firebase.firestore().collection('journee');
 
         // Déclaration du state
         this.state = {
@@ -32,32 +32,33 @@ class ReportPresence extends Component {
         var newPresence = [];
         var that = this;
 
-
-        console.log("check Global 1 => ", global.baseMorningHour);
-
         this.setState({
             peoples : JSON.parse(localStorage.getItem("peoples"))
         });
 
-        this.presenceRef.get()
+        this.journeeRef
+        .where("year", "==", this.state.selectedDate.getFullYear())
+        .where("month", "==", this.state.selectedDate.getMonth())
+        .get()
         .then(function(querySnapshot) {
-            querySnapshot.forEach(function(doc) {
-                // doc.data() is never undefined for query doc snapshots
-                var currentData = doc.data();
-                currentData.id = doc.id;
+            if(!querySnapshot.empty)  {
+                querySnapshot.forEach(function(doc) {
+                    // doc.data() is never undefined for query doc snapshots
+                    var currentData = doc.data().presences;
 
-                currentData.presenceDay = new Date(currentData.presenceDay.seconds*1000);
-                currentData.arrival = new Date(currentData.arrival.seconds*1000);
-                currentData.departure = new Date(currentData.departure.seconds*1000);
+                    newPresence = newPresence.concat(currentData);
 
-                newPresence.push(currentData);
+                    console.log(doc.id, " => ", doc.data());
+                    console.log("currentData=> ", currentData);
 
-                that.setState({
-                    presences : newPresence
+                    console.log("Presences => ", newPresence);
+
+                    that.setState({
+                        presences : newPresence
+                    });
+
                 });
-
-                console.log(doc.id, " => ", doc.data());
-            });
+            }
         });
 
     }
@@ -69,40 +70,25 @@ class ReportPresence extends Component {
 
         console.log("SearchDate => ", Math.round((date).getTime() / 1000));
 
-        this.presenceRef
-        .where("presenceDay", ">=", new Date(date.getFullYear(),date.getMonth(),1))
-        .where("presenceDay", "<=", new Date(date.getFullYear(),date.getMonth(),31))
+        this.journeeRef
+        .where("year", "==", date.getFullYear())
+        .where("month", "==", date.getMonth())
         .get()
         .then(function(querySnapshot) {
             if(!querySnapshot.empty)  {
                 querySnapshot.forEach(function(doc) {
                     // doc.data() is never undefined for query doc snapshots
-                    var currentData = doc.data();
-                    currentData.id = doc.id;
+                    var currentData = doc.data().presences;
 
+                    newPresence.concat(currentData);
 
-                    console.log(" => ", that.state.selectedDate.getTime());
-                    console.log(" => ", currentData.presenceDay.seconds*1000);
+                    console.log(doc.id, " => ", doc.data());
 
-                    var currentDate = new Date(currentData.presenceDay.seconds*1000);
-
-                    currentData.presenceDay = new Date(currentData.presenceDay.seconds*1000);
-                    currentData.arrival = new Date(currentData.arrival.seconds*1000);
-                    currentData.departure = new Date(currentData.departure.seconds*1000);
-
-
-                    console.log("currentDate.getFullYear() => ", currentDate.getFullYear());
-                    console.log("currentDate.getMonth() => ", currentDate.getMonth());
-                    console.log("date.getFullYear() => ", date.getFullYear());
-                    console.log("date.getMonth() => ", date.getMonth());
-
-                    newPresence.push(currentData);
+                    console.log("Presences => ", newPresence);
 
                     that.setState({
                         presences : newPresence
                     });
-
-                    console.log(doc.id, " => ", doc.data());
 
                 });
             }
@@ -123,7 +109,7 @@ class ReportPresence extends Component {
 
 
     displayFormatedTime(date) {
-        var dateToFormat = new Date(date)
+        var dateToFormat = new Date(date.seconds*1000)
         return dateToFormat.getHours() + ":" + dateToFormat.getMinutes().toString().padStart(2,0);
     }
 
@@ -193,12 +179,13 @@ class ReportPresence extends Component {
                             <td>{people.fullname}</td>
                             {(this.getDaysInMonth(this.state.selectedDate)).map((dayInMonth) => (
                                      <td className={this.isUnworkedDay(dayInMonth)} key={dayInMonth.getTime()}>{this.state.presences
-                                        .filter((presence) => (people.id === presence.personId))
-                                        .filter((presence) => (dayInMonth.getFullYear() === new Date(presence.presenceDay).getFullYear()
-                                                                && dayInMonth.getMonth() === new Date(presence.presenceDay).getMonth()
-                                                                && dayInMonth.getDate() === new Date(presence.presenceDay).getDate()))
+                                        .filter((presence) => (people.id == presence.personId))
+                                        .filter((presence) => (dayInMonth.getFullYear() === new Date(presence.presenceDay.seconds*1000).getFullYear()
+                                                                && dayInMonth.getMonth() === new Date(presence.presenceDay.seconds*1000).getMonth()
+                                                                && dayInMonth.getDate() == new Date(presence.presenceDay.seconds*1000).getDate()
+                                                                ))
                                         .map((presence) => (
-                                                <p key={presence.id}>
+                                                <p key={people.id + presence.presenceDay.seconds}>
                                                     {presence.arrival ? (this.displayFormatedTime(presence.arrival)) : ("-")}-{presence.departure ? (this.displayFormatedTime(presence.departure)) : ("-")}
                                                     <br />{presence.hasMeal ? ("Avec Repas") : ("Sans Repas")}
 
@@ -212,8 +199,8 @@ class ReportPresence extends Component {
                                 this.displayTotal(
                                     this.state.presences
                                     .filter((presence) => (people.id === presence.personId))
-                                    .filter((presence) => (this.state.selectedDate.getFullYear() === new Date(presence.presenceDay).getFullYear()
-                                                            && this.state.selectedDate.getMonth() === new Date(presence.presenceDay).getMonth()))
+                                    .filter((presence) => (this.state.selectedDate.getFullYear() === new Date(presence.presenceDay.seconds*1000).getFullYear()
+                                                            && this.state.selectedDate.getMonth() === new Date(presence.presenceDay.seconds*1000).getMonth()))
                                     .reduce(function(currentSum, presence)
                                             {
                                                 // Somme nombre de repas
@@ -222,27 +209,30 @@ class ReportPresence extends Component {
                                                 }
 
                                                 // Somme heures du matin
-                                                var baseMorning = new Date(presence.arrival);
+                                                var baseMorning = new Date(presence.arrival.seconds*1000);
+                                                var effectiveArrival = new Date(presence.arrival.seconds*1000);
 
                                                 baseMorning.setHours(global.baseMorningHour);
                                                 baseMorning.setMinutes(global.baseMorningMinute);
                                                 baseMorning.setSeconds(0);
                                                 baseMorning.setMilliseconds(0);
 
-                                                if(presence.arrival < baseMorning) {
-                                                    currentSum.totalMatin = currentSum.totalMatin + ((baseMorning - presence.arrival)/60000);
+
+                                                if(effectiveArrival < baseMorning) {
+                                                    currentSum.totalMatin = currentSum.totalMatin + ((baseMorning - effectiveArrival)/60000);
                                                 }
 
                                                 // Somme heures du soir
-                                                var baseEvening = new Date(presence.departure);
+                                                var baseEvening = new Date(presence.departure.seconds*1000);
+                                                var effectiveLeave = new Date(presence.departure.seconds*1000);
 
                                                 baseEvening.setHours(global.baseEveningHour);
                                                 baseEvening.setMinutes(global.baseEveningMinute);
                                                 baseEvening.setSeconds(0);
                                                 baseEvening.setMilliseconds(0);
 
-                                                if(baseEvening < presence.departure) {
-                                                    currentSum.totalSoir = currentSum.totalSoir + ((presence.departure - baseEvening)/60000);
+                                                if(baseEvening < effectiveLeave) {
+                                                    currentSum.totalSoir = currentSum.totalSoir + ((effectiveLeave - baseEvening)/60000);
                                                 }
 
                                                 return currentSum;

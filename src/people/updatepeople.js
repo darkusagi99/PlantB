@@ -62,7 +62,7 @@ class UpdatePeople extends Component {
 
         } else {
             this.setState({
-                id : this.state.peoples.length
+                id : this.state.peoples.length.toString()
              });
         }
     }
@@ -130,7 +130,6 @@ class UpdatePeople extends Component {
 
         // Test Create / update et sauvegarde
         if (this.props.match.params.id === undefined) {
-            obj.id =
             peopleList.push(obj);
 
         } else {

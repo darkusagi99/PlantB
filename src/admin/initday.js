@@ -19,7 +19,7 @@ class InitDay extends Component {
         this.resetHours = this.resetHours.bind(this);
 
         // Déclaration firebase
-        this.presenceRef = firebase.firestore().collection('presences');
+        this.journeeRef = firebase.firestore().collection('journee');
 
         // Initialisation pour la date du jour
         var presenceDate = new Date();
@@ -32,7 +32,7 @@ class InitDay extends Component {
         // Initialisation du state
         this.state = {
             selectedDate : presenceDate,
-            peoples: [],
+            peoples: JSON.parse(localStorage.getItem("peoples")),
             presenceList : []
         }
 
@@ -40,9 +40,11 @@ class InitDay extends Component {
 
     // Chargement lors du montage
     componentDidMount() {
-
         this.resetHours();
+    }
 
+    getDayId(date) {
+        return date.getFullYear() + "-" + date.getMonth() + '-' + date.getDate();
     }
 
     resetHours() {
@@ -93,30 +95,13 @@ class InitDay extends Component {
         var peoples = [];
         var presenceList = [];
 
+        var currentDateId = this.getDayId(this.state.selectedDate);
+
         // Récupération du nom du jour
         var days = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
         var dayName = days[this.state.selectedDate.getDay()];
 
         console.log("JOUR => ", dayName);
-
-        // Chargement des personnes
-        this.peopleRef.get()
-        .then(function(querySnapshot) {
-            querySnapshot.forEach(function(doc) {
-                // doc.data() is never undefined for query doc snapshots
-                var currentData = doc.data();
-                currentData.id = doc.id;
-
-                if (currentData.standardArrival.includes(dayName) ||
-                        currentData.standardDeparture.includes(dayName) ||
-                        currentData.standardMeal.includes(dayName)) {
-
-                    console.log(doc.id, " => ", doc.data());
-                    peoples.push(currentData);
-                }
-            });
-        });
-
 
         // Chargement des présences
         var that = this;
@@ -124,21 +109,12 @@ class InitDay extends Component {
         // RAZ des heures
         this.resetHours();
 
-        this.presenceRef
-        .where("presenceDay", "==", this.state.selectedDate)
+        this.journeeRef.doc(currentDateId)
         .get()
-        .then(function(querySnapshot) {
+        .then(function(doc) {
 
             // CHargement des présences existantes
-            if(!querySnapshot.empty)  {
-                querySnapshot.forEach(function(doc) {
-                    // doc.data() is never undefined for query doc snapshots
-                    var currentData = doc.data();
-                    currentData.id = doc.id;
-
-                    presenceList.push(currentData.personId);
-                });
-            }
+            presenceList = doc.data().presences;
 
             // Génération des présences manquantes
             peoples.forEach(function(person) {

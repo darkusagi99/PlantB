@@ -24,7 +24,7 @@ class CreateFastPresence extends Component {
         this.resetHours = this.resetHours.bind(this);
 
         // Déclaration firebase
-        this.presenceRef = firebase.firestore().collection('presences');
+        this.journeeRef = firebase.firestore().collection('journee');
 
         // Initialisation pour la date du jour
         var presenceDate = new Date();
@@ -35,7 +35,7 @@ class CreateFastPresence extends Component {
 
         // Initialisation du state
         this.state = {
-            presenceId : '',
+            presenceIndex : -1,
             personId : '',
             selectedDate : presenceDate,
             arrivalTime : new Date(),
@@ -65,25 +65,42 @@ class CreateFastPresence extends Component {
 
     }
 
-    loadPresence(doc, that) {
+    getDayId(date) {
+        return date.getFullYear() + "-" + date.getMonth() + '-' + date.getDate();
+    }
+
+    loadPresence(paramPersonId) {
+
+        console.log("id to find : ", this.state.personId);
+
+        // Recherche de la personne dans la liste des journées
+        var currentPresenceIndex = this.state.presences.findIndex(presence => presence.personId == paramPersonId);
+
+        console.log("currentPersonIndex : ", currentPresenceIndex);
+
         // doc.data() is never undefined for query doc snapshots
-        var currentData = doc.data();
-        currentData.id = doc.id;
+        if (currentPresenceIndex != -1) {
 
-        that.setState({
-            presenceId : doc.id,
-            personId : currentData.personId,
-            selectedDate : new Date(currentData.presenceDay.seconds*1000),
-            arrivalTime : new Date(currentData.arrival.seconds*1000),
-            depatureTime : new Date(currentData.departure.seconds*1000),
-            hasMeal : currentData.hasMeal,
-            previousPresence: ''
-        });
+            this.setState({
+                presenceIndex : currentPresenceIndex,
+                personId : this.state.presences[currentPresenceIndex].personId,
+                selectedDate : new Date(this.state.presences[currentPresenceIndex].presenceDay.seconds*1000),
+                arrivalTime : new Date(this.state.presences[currentPresenceIndex].arrival.seconds*1000),
+                depatureTime : new Date(this.state.presences[currentPresenceIndex].departure.seconds*1000),
+                hasMeal : this.state.presences[currentPresenceIndex].hasMeal
+            });
 
-        currentData.hasMeal ? that.refs.hasMeal.classList.add('active') : that.refs.hasMeal.classList.remove('active') ;
-        currentData.hasMeal ? that.refs.hasMeal.innerHTML = "Avec Repas" : that.refs.hasMeal.innerHTML = "Sans Repas" ;
+            this.state.presences[currentPresenceIndex].hasMeal ? this.refs.hasMeal.classList.add('active') : this.refs.hasMeal.classList.remove('active') ;
+            this.state.presences[currentPresenceIndex].hasMeal ? this.refs.hasMeal.innerHTML = "Avec Repas" : this.refs.hasMeal.innerHTML = "Sans Repas" ;
 
-        console.log(doc.id, " => ", doc.data());
+        } else {
+
+            this.resetHours();
+
+            this.setState({
+                presenceIndex : -1
+            });
+        }
 
     }
 
@@ -112,46 +129,41 @@ class CreateFastPresence extends Component {
 
         var that = this;
 
-        console.log("SearchDate => ", Math.round((this.state.selectedDate).getTime() / 1000));
+        console.log("targetValue : ", e.target.value);
 
         // RAZ des heures
         this.resetHours();
 
-        this.presenceRef
-        .where("personId", "==", e.target.value)
-        .where("presenceDay", "==", this.state.selectedDate)
-        .get()
-        .then(function(querySnapshot) {
-            if(!querySnapshot.empty) {
-                querySnapshot.forEach(doc => that.loadPresence(doc, that));
-            }
+        this.setState({
+            personId : e.target.value
         });
 
-        this.setState({
-        personId : e.target.value
-        });
+        this.loadPresence(e.target.value);
 
     }
 
     handleDateChange = date => {
 
         var that = this;
+        var currentDateId = this.getDayId(date);
+        var currentPresenceList;
 
         // RAZ des heures
         this.resetHours();
 
-        this.presenceRef
-        .where("personId", "==", this.state.personId)
-        .where("presenceDay", "==", date)
+        this.journeeRef.doc(currentDateId)
         .get()
-        .then(function(querySnapshot) {
-            if(!querySnapshot.empty)  {
-                querySnapshot.forEach(doc => that.loadPresence(doc, that));
+        .then(function(doc) {
+            if(doc.exists)  {
+                currentPresenceList = doc.data().presences;
+            } else {
+                currentPresenceList = [];
             }
         });
 
-        this.setState({
-            selectedDate : date
+
+            that.loadPresence(that.state.personId);
+
         });
     }
 
@@ -184,40 +196,31 @@ class CreateFastPresence extends Component {
     onSubmit(e) {
         e.preventDefault();
 
-        if (this.state.presenceId === '') {
+        var presenceList = this.state.presences;
 
-            this.presenceRef.add({
-                personId : this.state.personId,
-                presenceDay : this.state.selectedDate,
-                arrival : this.state.arrivalTime,
-                departure : this.state.depatureTime,
-                hasMeal : this.state.hasMeal
-            })
-            .then((docRef) => {
-                this.props.history.push("/presence/list")
-            })
-            .catch((error) => {
-                console.error("Error adding document: ", error);
-            });
+        var newPresence = {
+            personId : this.state.personId,
+            presenceDay : this.state.selectedDate,
+            arrival : this.state.arrivalTime,
+            departure : this.state.depatureTime,
+            hasMeal : this.state.hasMeal
+        }
+
+        if (this.state.presenceIndex == -1) {
+
+            presenceList.push(newPresence);
 
         } else {
 
-            const obj = {
-                id : this.state.presenceId,
-                personId : this.state.personId,
-                presenceDay : this.state.selectedDate,
-                arrival : this.state.arrivalTime,
-                departure : this.state.depatureTime,
-                hasMeal : this.state.hasMeal
-            };
+            presenceList[this.state.presenceIndex] = newPresence;
+
+        }
 
             this.presenceRef.doc(this.state.presenceId).set(obj)
             .then(this.props.history.push(`/presence/list`))
             .catch(error => {console.log(error);});
 
         }
-
-    }
 
     render() {
         return (
