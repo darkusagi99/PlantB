@@ -129,9 +129,9 @@ class ReportPresence extends Component {
 
 
     displayTotal(totalResult) {
-        return "Repas : " + totalResult.totalRepas +
-                " Matin : " + totalResult.totalMatin +
-                " Soir : " + totalResult.totalSoir ;
+        return <p>Repas&nbsp;:&nbsp;{totalResult.totalRepas}<br />
+               Matin&nbsp;:&nbsp;{totalResult.totalMatin}&nbsp;min.<br />
+               Soir&nbsp;:&nbsp;{totalResult.totalSoir}&nbsp;min.<br /></p>;
     }
 
     isUnworkedDay(date) {
