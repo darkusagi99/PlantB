@@ -47,16 +47,8 @@ class App extends Component {
 
           super(props);
 
-          global.baseMorningHour = 8;
-          global.baseMorningMinute = 30;
-          global.baseEveningHour = 16;
-          global.baseEveningMinute = 30;
-          global.minMorningHour = 7;
-          global.minMorningMinute = 0;
-          global.maxEveningHour = 10;
-          global.maxEveningMinute = 30;
-
           this.peopleRef = firebase.firestore().collection('peoples');
+          this.paramRef = firebase.firestore().collection('params');
           this.state = { peoples: [] };
       }
 
@@ -86,6 +78,31 @@ class App extends Component {
               localStorage.setItem("peoples", JSON.stringify(newPeople));
               that.forceUpdate();
           });
+
+          // Chargement des personnes
+          var localParams = JSON.parse(localStorage.getItem("param"));
+          if (!localParams) {
+                this.paramRef.get()
+                .then(function(querySnapshot) {
+                    querySnapshot.forEach(function(doc) {
+                    // doc.data() is never undefined for query doc snapshots
+                        localParams = doc.data();
+                        console.log("Params => ", localParams);
+                    });
+
+                    localStorage.setItem("param", JSON.stringify(localParams));
+
+                });
+          }
+
+          global.baseMorningHour = localParams.baseMorningHour;
+          global.baseMorningMinute = localParams.baseMorningMinute;
+          global.baseEveningHour = localParams.baseEveningHour;
+          global.baseEveningMinute = localParams.baseEveningMinute;
+          global.minMorningHour = localParams.minMorningHour;
+          global.minMorningMinute = localParams.minMorningMinute;
+          global.maxEveningHour = localParams.maxEveningHour;
+          global.maxEveningMinute = localParams.maxEveningMinute;
 
       }
 

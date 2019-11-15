@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import firebase from '../firebase';
 
 class People extends Component {

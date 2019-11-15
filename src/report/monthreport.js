@@ -146,7 +146,6 @@ class ReportPresence extends Component {
     }
 
     render() {
-        var totalRepas = 0;
         return (
             <div style={{marginTop: 10}}>
                 <h3>Rapport Mensuel</h3>
