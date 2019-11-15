@@ -7,10 +7,8 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-import PeopleContext from '../people/peoplecontext';
 
 class Presence extends Component {
-    static contextType = PeopleContext;
 
     // Constructeur
     constructor(props) {
@@ -41,18 +39,9 @@ class Presence extends Component {
 
         // Chargement liste personnes
         this.setState({
-            peoples : this.context
+            peoples : JSON.parse(localStorage.getItem("peoples"))
         });
 
-    }
-
-    componentDidUpdate() {
-        // Chargement liste personnes
-        if (this.context !== this.state.peoples) {
-            this.setState({
-                peoples : this.context
-            });
-        }
     }
 
     handlePersonChange = e => {

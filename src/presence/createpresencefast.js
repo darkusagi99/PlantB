@@ -7,10 +7,8 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import firebase from '../firebase';
-import PeopleContext from '../people/peoplecontext';
 
 class CreateFastPresence extends Component {
-    static contextType = PeopleContext;
 
     // Constructeur
     constructor(props) {
@@ -54,7 +52,7 @@ class CreateFastPresence extends Component {
 
         // Chargement liste personnes
         this.setState({
-            peoples : this.context
+            peoples : JSON.parse(localStorage.getItem("peoples"))
         });
 
         // Initialisation des heures
@@ -66,15 +64,6 @@ class CreateFastPresence extends Component {
 
         }
 
-    }
-
-    componentDidUpdate() {
-        // Chargement liste personnes
-        if (this.context !== this.state.peoples) {
-            this.setState({
-                peoples : this.context
-            });
-        }
     }
 
     loadPresence(doc, that) {
@@ -132,7 +121,6 @@ class CreateFastPresence extends Component {
         this.presenceRef
         .where("personId", "==", e.target.value)
         .where("presenceDay", "==", this.state.selectedDate)
-        //.where("presenceDay.seconds", "==", 1573426800)
         .get()
         .then(function(querySnapshot) {
             if(!querySnapshot.empty) {

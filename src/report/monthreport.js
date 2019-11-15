@@ -7,10 +7,8 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-import PeopleContext from '../people/peoplecontext';
 
 class ReportPresence extends Component {
-    static contextType = PeopleContext;
 
     // Constructeur
     constructor(props) {
@@ -19,7 +17,6 @@ class ReportPresence extends Component {
 
         // Bind des méthodes
         this.handleDateChange = this.handleDateChange.bind(this);
-        this.peopleRef = firebase.firestore().collection('peoples');
         this.presenceRef = firebase.firestore().collection('presences');
 
         // Déclaration du state
@@ -32,12 +29,11 @@ class ReportPresence extends Component {
     }
 
     componentDidMount() {
-        var newPeople =  this.context;
         var newPresence = [];
         var that = this;
 
         this.setState({
-            peoples : newPeople
+            peoples : JSON.parse(localStorage.getItem("peoples"))
         });
 
         this.presenceRef.get()
@@ -61,15 +57,6 @@ class ReportPresence extends Component {
             });
         });
 
-    }
-
-    componentDidUpdate() {
-        // Chargement liste personnes
-        if (this.context !== this.state.peoples) {
-            this.setState({
-                peoples : this.context
-            });
-        }
     }
 
     handleDateChange = date => {

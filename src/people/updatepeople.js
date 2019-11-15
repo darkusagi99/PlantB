@@ -125,7 +125,7 @@ class UpdatePeople extends Component {
                 standardMeal: Array.from( this.state.standardMeal.keys())
             })
             .then((docRef) => {
-                this.props.history.push("/people/list")
+                this.props.history.push("/people/refresh")
             })
             .catch((error) => {
                 console.error("Error adding document: ", error);
@@ -133,7 +133,7 @@ class UpdatePeople extends Component {
         } else {
 
             this.ref.doc(this.props.match.params.id).set(obj)
-            .then(this.props.history.push(`/people/list`))
+            .then(this.props.history.push("/people/refresh"))
             .catch(error => {console.log(error);});
         }
     }
@@ -152,7 +152,7 @@ class UpdatePeople extends Component {
                         onChange={this.onChangeName} />
                     </div>
                     <div className="form-group">
-                        <div class="btn-group" role="group" aria-label="Basic example">
+                        <div className="btn-group" role="group" aria-label="Basic example">
                             <button type="button" className="btn btn-light disabled">Matin</button>
                             <button type="button" className="btn btn-secondary" value="MONDAY" ref="arrivalMonday"  onClick={this.onChangeButtonValue("standardArrival", this)} >Lundi</button>
                             <button type="button" className="btn btn-secondary" value="TUESDAY" ref="arrivalTuesday"  onClick={this.onChangeButtonValue("standardArrival", this)} >Mardi</button>
@@ -161,7 +161,7 @@ class UpdatePeople extends Component {
                         </div>
                     </div>
                     <div className="form-group">
-                        <div class="btn-group" role="group" aria-label="Basic example">
+                        <div className="btn-group" role="group" aria-label="Basic example">
                             <button type="button" className="btn btn-light disabled">Soir</button>
                             <button type="button" className="btn btn-secondary" value="MONDAY" ref="leaveMonday"  onClick={this.onChangeButtonValue("standardDeparture", this)} >Lundi</button>
                             <button type="button" className="btn btn-secondary" value="TUESDAY" ref="leaveTuesday"  onClick={this.onChangeButtonValue("standardDeparture", this)} >Mardi</button>
@@ -171,7 +171,7 @@ class UpdatePeople extends Component {
                         </div>
                     </div>
                     <div className="form-group">
-                        <div class="btn-group" role="group" aria-label="Basic example">
+                        <div className="btn-group" role="group" aria-label="Basic example">
                             <button type="button" className="btn btn-light disabled">Repas</button>
                             <button type="button" className="btn btn-secondary" value="MONDAY" ref="mealMonday"  onClick={this.onChangeButtonValue("standardMeal", this)} >Lundi</button>
                             <button type="button" className="btn btn-secondary" value="TUESDAY" ref="mealTuesday"  onClick={this.onChangeButtonValue("standardMeal", this)} >Mardi</button>

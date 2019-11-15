@@ -13,7 +13,6 @@ import Presence from './presence/presencelist';
 import CreateFastPresence from './presence/createpresencefast';
 import ReportPresence from './report/monthreport';
 import InitDay from './admin/initday';
-import PeopleContext from './people/peoplecontext';
 import './App.css';
 
 import withFirebaseAuth from 'react-with-firebase-auth'
@@ -67,12 +66,15 @@ class App extends Component {
                   currentData.id = doc.id;
 
                   newPeople.push(currentData);
+
+                  console.log("Personne App", doc.id, " => ", doc.data());
               });
 
               // MAJ de l'etat
               that.setState({
                   peoples: newPeople
               });
+              localStorage.setItem("peoples", JSON.stringify(newPeople));
               that.forceUpdate();
           });
 
@@ -87,7 +89,6 @@ class App extends Component {
 
         return (
 
-        <PeopleContext.Provider value={this.state.peoples}>
         <div>
 
         {
@@ -113,8 +114,8 @@ class App extends Component {
                             </Navbar> <br/>
                             <Switch>
                                 <Route path='/people/create' component={ UpdatePeople } />
-                                <Route path='/people/create' component={ UpdatePeople } />
                                 <Route path='/people/list' component={ People } />
+                                <Route path='/people/refresh' component={ People } />
                                 <Route path='/people/update/:id' component={ UpdatePeople } />
                                 <Route path='/presence/create' component={ CreateFastPresence } />
                                 <Route path='/presence/list' component={ Presence } />
@@ -130,7 +131,6 @@ class App extends Component {
              IfUnAuthed()
         }
         </div>
-        </PeopleContext.Provider>
         );
       }
 }

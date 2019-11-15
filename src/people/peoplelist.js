@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom';
-import PeopleContext from './peoplecontext';
+import { Link, useParams } from 'react-router-dom';
+import firebase from '../firebase';
 
 class People extends Component {
-
-    static contextType = PeopleContext;
 
     // Constructeur
     constructor(props) {
@@ -12,25 +10,49 @@ class People extends Component {
         super(props);
 
         this.affichageJours = this.affichageJours.bind(this);
+
+        this.ref = firebase.firestore().collection('peoples');
+
         this.state = { peoples: [] };
     }
 
     // Chargement lors du montage
     componentDidMount() {
 
-        this.setState({
-            peoples : this.context
-        });
+        if (this.props.location.pathname === '/people/refresh') {
 
-    }
+            console.log("Detection action");
+            var newPeople = [];
+            var that = this;
 
-    componentDidUpdate() {
-        // Chargement liste personnes
-        if (this.context !== this.state.peoples) {
-            this.setState({
-                peoples : this.context
+            // Chargement des personnes
+            this.ref.get()
+            .then(function(querySnapshot) {
+                querySnapshot.forEach(function(doc) {
+                    // doc.data() is never undefined for query doc snapshots
+                    var currentData = doc.data();
+                    currentData.id = doc.id;
+
+                    newPeople.push(currentData);
+
+                    console.log("Personne App", doc.id, " => ", doc.data());
+                    });
+
+                    // MAJ de l'etat
+                    that.setState({
+                        peoples: newPeople
+                    });
+                    localStorage.setItem("peoples", JSON.stringify(newPeople));
             });
+
+
+        } else {
+            this.setState({
+                peoples : JSON.parse(localStorage.getItem("peoples"))
+            });
+
         }
+
     }
 
     // Méthode mise en forme affichage
