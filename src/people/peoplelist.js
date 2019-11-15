@@ -11,7 +11,7 @@ class People extends Component {
 
         this.affichageJours = this.affichageJours.bind(this);
 
-        this.ref = firebase.firestore().collection('peoples');
+        this.peopleListRef = firebase.firestore().collection('peoplesList').doc("eleves");
 
         this.state = { peoples: [] };
     }
@@ -26,23 +26,19 @@ class People extends Component {
             var that = this;
 
             // Chargement des personnes
-            this.ref.get()
-            .then(function(querySnapshot) {
-                querySnapshot.forEach(function(doc) {
-                    // doc.data() is never undefined for query doc snapshots
-                    var currentData = doc.data();
-                    currentData.id = doc.id;
+            this.peopleListRef.get()
+            .then(function(doc) {
+                // doc.data() is never undefined for query doc snapshots
+                var currentData = doc.data();
 
-                    newPeople.push(currentData);
+                console.log("Personne App", doc.id, " => ", doc.data());
 
-                    console.log("Personne App", doc.id, " => ", doc.data());
-                    });
 
-                    // MAJ de l'etat
-                    that.setState({
-                        peoples: newPeople
-                    });
-                    localStorage.setItem("peoples", JSON.stringify(newPeople));
+                // MAJ de l'etat
+                that.setState({
+                    peoples: doc.data().peoples
+                });
+                localStorage.setItem("peoples", JSON.stringify(doc.data().peoples));
             });
 
 

@@ -12,7 +12,7 @@ class UpdatePeople extends Component {
         this.onSubmit = this.onSubmit.bind(this);
 
         // déclaration firebase
-        this.ref = firebase.firestore().collection('peoples');
+        this.peopleListRef = firebase.firestore().collection('peoplesList').doc("eleves");
 
         // déclaration state
         this.state = {
@@ -20,7 +20,8 @@ class UpdatePeople extends Component {
             fullname : '',
             standardArrival: new Map(),
             standardDeparture: new Map(),
-            standardMeal: new Map()
+            standardMeal: new Map(),
+            peoples: JSON.parse(localStorage.getItem("peoples"))
         }
     }
 
@@ -30,31 +31,39 @@ class UpdatePeople extends Component {
         // Uniquement pour la mise à jour
         if (this.props.match.params.id !== undefined) {
 
+
+            console.log("People to update - id", this.props.match.params.id);
+
+            console.log("People to update - peopleList", this.state.peoples);
+
+            var currentPeople = this.state.peoples.find(people => people.id == this.props.match.params.id);
+            console.log("People to update", currentPeople);
+
             // Chargement données et mise à jour page
-            this.ref.doc(this.props.match.params.id)
-            .get()
-            .then((doc) => {
-                this.setState({
-                    id : doc.id,
-                    fullname : doc.data().fullname,
-                    standardArrival : new Map(doc.data().standardArrival.map(i => [i, true])),
-                    standardDeparture : new Map(doc.data().standardDeparture.map(i => [i, true])),
-                    standardMeal : new Map(doc.data().standardMeal.map(i => [i, true]))
-                 });
-                 doc.data().standardArrival.includes("MONDAY") ? this.refs.arrivalMonday.classList.add('active') : this.refs.arrivalMonday.classList.remove('active') ;
-                 doc.data().standardArrival.includes("TUESDAY") ? this.refs.arrivalTuesday.classList.add('active') : this.refs.arrivalTuesday.classList.remove('active') ;
-                 doc.data().standardArrival.includes("THURSDAY") ? this.refs.arrivalThursday.classList.add('active') : this.refs.arrivalThursday.classList.remove('active') ;
-                 doc.data().standardArrival.includes("FRIDAY") ? this.refs.arrivalFriday.classList.add('active') : this.refs.arrivalFriday.classList.remove('active') ;
-                 doc.data().standardDeparture.includes("MONDAY") ? this.refs.leaveMonday.classList.add('active') : this.refs.leaveMonday.classList.remove('active') ;
-                 doc.data().standardDeparture.includes("TUESDAY") ? this.refs.leaveTuesday.classList.add('active') : this.refs.leaveTuesday.classList.remove('active') ;
-                 doc.data().standardDeparture.includes("THURSDAY") ? this.refs.leaveThursday.classList.add('active') : this.refs.leaveThursday.classList.remove('active') ;
-                 doc.data().standardDeparture.includes("FRIDAY") ? this.refs.leaveFriday.classList.add('active') : this.refs.leaveFriday.classList.remove('active') ;
-                 doc.data().standardMeal.includes("MONDAY") ? this.refs.mealMonday.classList.add('active') : this.refs.mealMonday.classList.remove('active') ;
-                 doc.data().standardMeal.includes("TUESDAY") ? this.refs.mealTuesday.classList.add('active') : this.refs.mealTuesday.classList.remove('active') ;
-                 doc.data().standardMeal.includes("THURSDAY") ? this.refs.mealThursday.classList.add('active') : this.refs.mealThursday.classList.remove('active') ;
-                 doc.data().standardMeal.includes("FRIDAY") ? this.refs.mealFriday.classList.add('active') : this.refs.mealFriday.classList.remove('active') ;
-            })
-            .catch(console.log)
+            this.setState({
+                id : currentPeople.id,
+                fullname : currentPeople.fullname,
+                standardArrival : new Map(currentPeople.standardArrival.map(i => [i, true])),
+                standardDeparture : new Map(currentPeople.standardDeparture.map(i => [i, true])),
+                standardMeal : new Map(currentPeople.standardMeal.map(i => [i, true]))
+             });
+             currentPeople.standardArrival.includes("MONDAY") ? this.refs.arrivalMonday.classList.add('active') : this.refs.arrivalMonday.classList.remove('active') ;
+             currentPeople.standardArrival.includes("TUESDAY") ? this.refs.arrivalTuesday.classList.add('active') : this.refs.arrivalTuesday.classList.remove('active') ;
+             currentPeople.standardArrival.includes("THURSDAY") ? this.refs.arrivalThursday.classList.add('active') : this.refs.arrivalThursday.classList.remove('active') ;
+             currentPeople.standardArrival.includes("FRIDAY") ? this.refs.arrivalFriday.classList.add('active') : this.refs.arrivalFriday.classList.remove('active') ;
+             currentPeople.standardDeparture.includes("MONDAY") ? this.refs.leaveMonday.classList.add('active') : this.refs.leaveMonday.classList.remove('active') ;
+             currentPeople.standardDeparture.includes("TUESDAY") ? this.refs.leaveTuesday.classList.add('active') : this.refs.leaveTuesday.classList.remove('active') ;
+             currentPeople.standardDeparture.includes("THURSDAY") ? this.refs.leaveThursday.classList.add('active') : this.refs.leaveThursday.classList.remove('active') ;
+             currentPeople.standardDeparture.includes("FRIDAY") ? this.refs.leaveFriday.classList.add('active') : this.refs.leaveFriday.classList.remove('active') ;
+             currentPeople.standardMeal.includes("MONDAY") ? this.refs.mealMonday.classList.add('active') : this.refs.mealMonday.classList.remove('active') ;
+             currentPeople.standardMeal.includes("TUESDAY") ? this.refs.mealTuesday.classList.add('active') : this.refs.mealTuesday.classList.remove('active') ;
+             currentPeople.standardMeal.includes("THURSDAY") ? this.refs.mealThursday.classList.add('active') : this.refs.mealThursday.classList.remove('active') ;
+             currentPeople.standardMeal.includes("FRIDAY") ? this.refs.mealFriday.classList.add('active') : this.refs.mealFriday.classList.remove('active') ;
+
+        } else {
+            this.setState({
+                id : this.state.peoples.length
+             });
         }
     }
 
@@ -103,6 +112,8 @@ class UpdatePeople extends Component {
     onSubmit(e) {
         e.preventDefault();
 
+        var peopleList = this.state.peoples;
+
         // Nettoyage des listes à sauver
         this.state.standardArrival.forEach(this.filterMapElement);
         this.state.standardDeparture.forEach(this.filterMapElement);
@@ -110,6 +121,7 @@ class UpdatePeople extends Component {
 
         // Construction objet de sauvegarde
         const obj = {
+            id: this.state.id,
             fullname: this.state.fullname,
             standardArrival: Array.from( this.state.standardArrival.keys()),
             standardDeparture:  Array.from( this.state.standardDeparture.keys()),
@@ -118,24 +130,21 @@ class UpdatePeople extends Component {
 
         // Test Create / update et sauvegarde
         if (this.props.match.params.id === undefined) {
-            this.ref.add({
-                fullname: this.state.fullname,
-                standardArrival: Array.from( this.state.standardArrival.keys()),
-                standardDeparture:  Array.from( this.state.standardDeparture.keys()),
-                standardMeal: Array.from( this.state.standardMeal.keys())
-            })
-            .then((docRef) => {
-                this.props.history.push("/people/refresh")
-            })
-            .catch((error) => {
-                console.error("Error adding document: ", error);
-            });
-        } else {
+            obj.id =
+            peopleList.push(obj);
 
-            this.ref.doc(this.props.match.params.id).set(obj)
-            .then(this.props.history.push("/people/refresh"))
-            .catch(error => {console.log(error);});
+        } else {
+            peopleList[this.props.match.params.id] = obj;
         }
+
+        const peopleToSave = {
+            peoples : peopleList
+        }
+
+
+        this.peopleListRef.set(peopleToSave)
+        .then(this.props.history.push("/people/refresh"))
+        .catch(error => {console.log(error);});
     }
 
     // Rendu de la page
