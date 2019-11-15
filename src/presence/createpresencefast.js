@@ -58,8 +58,24 @@ class CreateFastPresence extends Component {
         this.resetHours();
 
         if (this.props.match.params.id !== undefined) {
-            this.presenceRef.doc(this.props.match.params.id).get()
-            .then(doc => this.loadPresence(doc, that));
+            currentPersonId = this.props.match.params.id;
+
+            this.setState({
+                personId : this.props.match.params.id
+            });
+
+        }
+
+        if (this.props.match.params.dateRef !== undefined) {
+            currentDateId = this.props.match.params.dateRef;
+            presenceDate.setFullYear(currentDateId.slice(0,4));
+            presenceDate.setMonth(currentDateId.slice(5,7));
+            presenceDate.setDate(currentDateId.slice(8,10));
+
+            this.setState({
+                currentDateId : currentDateId,
+                selectedDate : presenceDate
+            });
 
         }
 

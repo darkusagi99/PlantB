@@ -143,7 +143,7 @@ class App extends Component {
                                 <Route path='/people/update/:id' component={ UpdatePeople } />
                                 <Route path='/presence/create' component={ CreateFastPresence } />
                                 <Route path='/presence/list' component={ Presence } />
-                                <Route path='/presence/update/:id' component={ CreateFastPresence } />
+                                <Route path='/presence/update/:dateRef/:id' component={ CreateFastPresence } />
                                 <Route path='/report/month' component={ ReportPresence } />
                                 <Route path='/admin/initday' component={ InitDay } />
                                 <Route path='/' component={ CreateFastPresence } />

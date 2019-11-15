@@ -63,6 +63,10 @@ class ReportPresence extends Component {
 
     }
 
+    getDayId(date) {
+        return date.getFullYear() + "-" + date.getMonth() + '-' + date.getDate();
+    }
+
     handleDateChange = date => {
 
         var that = this;
@@ -189,7 +193,7 @@ class ReportPresence extends Component {
                                                     {presence.arrival ? (this.displayFormatedTime(presence.arrival)) : ("-")}-{presence.departure ? (this.displayFormatedTime(presence.departure)) : ("-")}
                                                     <br />{presence.hasMeal ? ("Avec Repas") : ("Sans Repas")}
 
-                                                    <br /><Link to={'/presence/update/' + presence.id} className="nav-link">MàJ</Link>
+                                                    <br /><Link to={'/presence/update/' + this.getDayId(dayInMonth) + '/' + people.id} className="nav-link">MàJ</Link>
                                                 </p>
                                             )
                                         )}
