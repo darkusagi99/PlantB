@@ -21,7 +21,6 @@ class Presence extends Component {
         this.displayFormatedTime = this.displayFormatedTime.bind(this);
 
         // Initialisations firebase
-        this.peopleRef = firebase.firestore().collection('peoples');
         this.presenceRef = firebase.firestore().collection('presences');
 
 

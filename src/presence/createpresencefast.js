@@ -24,7 +24,6 @@ class CreateFastPresence extends Component {
         this.resetHours = this.resetHours.bind(this);
 
         // Déclaration firebase
-        this.peopleRef = firebase.firestore().collection('peoples');
         this.presenceRef = firebase.firestore().collection('presences');
 
         // Initialisation pour la date du jour
