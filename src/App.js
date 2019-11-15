@@ -47,6 +47,15 @@ class App extends Component {
 
           super(props);
 
+          global.baseMorningHour = 8;
+          global.baseMorningMinute = 30;
+          global.baseEveningHour = 16;
+          global.baseEveningMinute = 30;
+          global.minMorningHour = 7;
+          global.minMorningMinute = 0;
+          global.maxEveningHour = 10;
+          global.maxEveningMinute = 30;
+
           this.peopleRef = firebase.firestore().collection('peoples');
           this.state = { peoples: [] };
       }

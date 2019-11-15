@@ -32,6 +32,9 @@ class ReportPresence extends Component {
         var newPresence = [];
         var that = this;
 
+
+        console.log("check Global 1 => ", global.baseMorningHour);
+
         this.setState({
             peoples : JSON.parse(localStorage.getItem("peoples"))
         });
@@ -221,27 +224,24 @@ class ReportPresence extends Component {
                                                 // Somme heures du matin
                                                 var baseMorning = new Date(presence.arrival);
 
-                                                baseMorning.setHours(8);
-                                                baseMorning.setMinutes(30);
+                                                baseMorning.setHours(global.baseMorningHour);
+                                                baseMorning.setMinutes(global.baseMorningMinute);
                                                 baseMorning.setSeconds(0);
                                                 baseMorning.setMilliseconds(0);
 
                                                 if(presence.arrival < baseMorning) {
-                                                    console.log("difference matin => ", baseMorning - presence.arrival);
                                                     currentSum.totalMatin = currentSum.totalMatin + ((baseMorning - presence.arrival)/60000);
                                                 }
 
                                                 // Somme heures du soir
                                                 var baseEvening = new Date(presence.departure);
 
-                                                baseEvening.setHours(16);
-                                                baseEvening.setMinutes(30);
+                                                baseEvening.setHours(global.baseEveningHour);
+                                                baseEvening.setMinutes(global.baseEveningMinute);
                                                 baseEvening.setSeconds(0);
                                                 baseEvening.setMilliseconds(0);
 
-                                                console.log("presence.arrival => ", presence.departure);
                                                 if(baseEvening < presence.departure) {
-                                                    console.log("difference soir => ", presence.departure - baseEvening);
                                                     currentSum.totalSoir = currentSum.totalSoir + ((presence.departure - baseEvening)/60000);
                                                 }
 

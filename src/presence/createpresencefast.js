@@ -93,12 +93,12 @@ class CreateFastPresence extends Component {
         var arrivalDate = new Date();
         var departureDate = new Date();
 
-        arrivalDate.setHours(7);
-        arrivalDate.setMinutes(0);
+        arrivalDate.setHours(global.baseMorningHour);
+        arrivalDate.setMinutes(global.baseMorningMinute);
         arrivalDate.setSeconds(0);
         arrivalDate.setMilliseconds(0);
-        departureDate.setHours(16);
-        departureDate.setMinutes(30);
+        departureDate.setHours(global.baseEveningHour);
+        departureDate.setMinutes(global.baseEveningMinute);
         departureDate.setSeconds(0);
         departureDate.setMilliseconds(0);
 

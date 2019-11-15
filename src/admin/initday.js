@@ -53,21 +53,21 @@ class InitDay extends Component {
         var baseArrivalDate = new Date(this.state.selectedDate);
         var baseDepartureDate = new Date(this.state.selectedDate);
 
-        arrivalDate.setHours(7);
-        arrivalDate.setMinutes(0);
+        arrivalDate.setHours(global.minMorningHour);
+        arrivalDate.setMinutes(global.minMorningMinute);
         arrivalDate.setSeconds(0);
         arrivalDate.setMilliseconds(0);
-        departureDate.setHours(18);
-        departureDate.setMinutes(30);
+        departureDate.setHours(global.maxEveningHour);
+        departureDate.setMinutes(global.maxEveningMinute);
         departureDate.setSeconds(0);
         departureDate.setMilliseconds(0);
 
-        baseArrivalDate.setHours(8);
-        baseArrivalDate.setMinutes(30);
+        baseArrivalDate.setHours(global.baseMorningHour);
+        baseArrivalDate.setMinutes(global.baseMorningMinute);
         baseArrivalDate.setSeconds(0);
         baseArrivalDate.setMilliseconds(0);
-        baseDepartureDate.setHours(16);
-        baseDepartureDate.setMinutes(30);
+        baseDepartureDate.setHours(global.baseEveningHour);
+        baseDepartureDate.setMinutes(global.baseEveningMinute);
         baseDepartureDate.setSeconds(0);
         baseDepartureDate.setMilliseconds(0);
 
