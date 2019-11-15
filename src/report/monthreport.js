@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import firebase from '../firebase';
 import {
   MuiPickersUtilsProvider,
-  KeyboardDatePicker,
+  KeyboardDatePicker
 } from '@material-ui/pickers';
 
 class ReportPresence extends Component {
@@ -168,6 +168,8 @@ class ReportPresence extends Component {
                                 KeyboardButtonProps={{
                                 'aria-label': 'change date',
                                 }}
+                                views={["year", "month"]}
+                                minDate="2019-08-31"
                                 />
                             </MuiPickersUtilsProvider>
                         </div>
@@ -177,7 +179,6 @@ class ReportPresence extends Component {
                 <table className="table table-striped">
                 <thead>
                      <tr>
-
                          <th>Elève</th>
                          {(this.getDaysInMonth(this.state.selectedDate)).map((dayInMonth) => (
                             <th className={this.isUnworkedDay(dayInMonth)} key={dayInMonth.getTime()}>{dayInMonth.getDate()}</th>
