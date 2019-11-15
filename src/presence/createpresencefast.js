@@ -33,6 +33,8 @@ class CreateFastPresence extends Component {
         presenceDate.setSeconds(0);
         presenceDate.setMilliseconds(0);
 
+        var currentDateId = this.getDayId(presenceDate);
+
         // Initialisation du state
         this.state = {
             presenceIndex : -1,
@@ -41,13 +43,19 @@ class CreateFastPresence extends Component {
             arrivalTime : new Date(),
             depatureTime : new Date(),
             hasMeal : false,
-            peoples: []
+            peoples: [],
+            presences: [],
+            currentDateId : currentDateId
         }
     }
 
     // Chargement du composant
     componentDidMount() {
         var that = this;
+        var currentPresenceList;
+        var currentDateId = this.state.currentDateId;
+        var presenceDate = this.state.selectedDate;
+        var currentPersonId = '';
 
         // Chargement liste personnes
         this.setState({
@@ -78,6 +86,24 @@ class CreateFastPresence extends Component {
             });
 
         }
+
+        this.journeeRef.doc(currentDateId)
+        .get()
+        .then(function(doc) {
+            if(doc.exists)  {
+                currentPresenceList = doc.data().presences;
+            } else {
+                currentPresenceList = [];
+            }
+
+            that.setState({
+                presences : currentPresenceList
+            });
+
+            that.loadPresence(currentPersonId);
+
+            console.log("currentPresenceList Loaded", currentPresenceList);
+        });
 
     }
 
@@ -175,12 +201,27 @@ class CreateFastPresence extends Component {
             } else {
                 currentPresenceList = [];
             }
-        });
+
+            that.setState({
+                selectedDate : date,
+                currentDateId : currentDateId,
+                presences : currentPresenceList
+            });
 
 
             that.loadPresence(that.state.personId);
 
         });
+
+        this.setState({
+            selectedDate : date,
+            currentDateId : currentDateId,
+            presences : currentPresenceList
+        });
+
+
+        console.log("DateId : ", currentDateId);
+
     }
 
     handleArrivalChange = date => {
@@ -232,11 +273,19 @@ class CreateFastPresence extends Component {
 
         }
 
-            this.presenceRef.doc(this.state.presenceId).set(obj)
-            .then(this.props.history.push(`/presence/list`))
-            .catch(error => {console.log(error);});
-
+        const JourneeToSave = {
+            presences : presenceList,
+            day : this.state.selectedDate.getDate(),
+            month : this.state.selectedDate.getMonth(),
+            year : this.state.selectedDate.getFullYear()
         }
+
+        this.journeeRef.doc(this.state.currentDateId).set(JourneeToSave)
+        .then(this.props.history.push(`/presence/list`))
+        .catch(error => {console.log(error);});
+
+
+    }
 
     render() {
         return (

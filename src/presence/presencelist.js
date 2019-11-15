@@ -21,16 +21,22 @@ class Presence extends Component {
         this.displayFormatedTime = this.displayFormatedTime.bind(this);
 
         // Initialisations firebase
-        this.presenceRef = firebase.firestore().collection('presences');
+        this.journeeRef = firebase.firestore().collection('journee');
 
 
         // Initialisation state
         this.state = {
             presences: [],
+            alldaypresences: [],
             peoples: [],
             selectedDate: '',
-            selectedPersonId: ''
+            selectedPersonId: '',
+            currentDateId: ''
         };
+    }
+
+    getDayId(date) {
+        return date.getFullYear() + "-" + date.getMonth() + '-' + date.getDate();
     }
 
     // Méthodes pour le chargement des présences
@@ -46,41 +52,11 @@ class Presence extends Component {
     handlePersonChange = e => {
 
         var that = this;
-        var newPresence = [];
-        var presenceRefPerson;
-
-        if (this.state.selectedDate !== '') {
-            presenceRefPerson = this.presenceRef
-                                        .where("personId", "==", e.target.value)
-                                        .where("presenceDay", "==", this.state.selectedDate);
-        } else {
-            presenceRefPerson = this.presenceRef
-                                        .where("personId", "==", e.target.value);
-        }
-
-        presenceRefPerson
-        .get()
-        .then(function(querySnapshot) {
-            if(!querySnapshot.empty) {
-                querySnapshot.forEach(function(doc) {
-                    // doc.data() is never undefined for query doc snapshots
-                    var currentData = doc.data();
-                    currentData.id = doc.id;
-
-                    newPresence.push(currentData);
-
-                    that.setState({
-                    presences : newPresence
-                    });
-
-                    console.log(doc.id, " => ", doc.data());
-                });
-            }
-        });
+        var selectedpresences = this.state.alldaypresences.filter((presence) => (e.target.value === presence.personId));
 
         this.setState({
             selectedPersonId : e.target.value,
-            presences : newPresence
+            presences : selectedpresences
         });
 
     }
@@ -89,43 +65,51 @@ class Presence extends Component {
 
         var that = this;
         var newPresence = [];
+        var currentDateId = this.getDayId(date);
+        var currentPresenceList = [];
+        var currentPresenceToShow = [];
 
         date.setHours(0);
         date.setMinutes(0);
         date.setSeconds(0);
         date.setMilliseconds(0);
 
-        console.log("SearchDate => ", Math.round((date).getTime() / 1000));
+        console.log("SearchDate => ", currentDateId);
 
         var presenceRefPerson;
 
-        if (this.state.selectedPersonId === '') {
-            presenceRefPerson = this.presenceRef.where("presenceDay", "==", date);
-        } else {
-            presenceRefPerson = this.presenceRef.where("personId", "==", this.state.selectedPersonId).where("presenceDay", "==", date);
-        }
-
-        presenceRefPerson
+        this.journeeRef.doc(currentDateId)
         .get()
-        .then(function(querySnapshot) {
-            if(!querySnapshot.empty)  {
-                querySnapshot.forEach(function(doc) {
-                    // doc.data() is never undefined for query doc snapshots
-                    var currentData = doc.data();
-                    currentData.id = doc.id;
-                    newPresence.push(currentData);
+        .then(function(doc) {
+            if(doc.exists)  {
+                console.log("docExiste => ", currentDateId);
+                currentPresenceList = doc.data().presences;
+                currentPresenceToShow = currentPresenceList;
+                // Filtre de la date voulue
+                if (that.state.selectedPersonId != '') {
+                    currentPresenceToShow = currentPresenceList.filter((presence) => (that.state.selectedPersonId === presence.personId));
+                }
 
-                    that.setState({
-                        presences : newPresence
-                    });
+                that.setState({
+                    presences : currentPresenceToShow,
+                    alldaypresences : currentPresenceList
                 });
+
+            } else {
+                currentPresenceList = [];
             }
         });
 
-        this.setState({
+        that.setState({
+            presences : currentPresenceList,
+            alldaypresences : currentPresenceList,
             selectedDate : date,
-            presences : newPresence
+            currentDateId : currentDateId
         });
+
+        console.log("SearchDate => presences : ", currentPresenceList);
+
+
     }
 
     // Affichage de la date formattée
@@ -153,19 +137,6 @@ class Presence extends Component {
                 <div style={{marginTop: 10}}>
                     <h4>Filtres</h4>
                     <form onSubmit={this.onSubmit}>
-                        <div className="input-group mb-3">
-                            <div className="input-group-prepend">
-                                <label className="input-group-text" htmlFor="inputGroupPerson">Eleve</label>
-                            </div>
-
-                            <select className="custom-select" id="inputGroupPerson" value={this.state.personId} onChange={this.handlePersonChange}>
-
-                                <option value="">Choix...</option>
-                                {this.state.peoples.map((people) => (
-                                    <option value={people.id} key={people.id}>{people.fullname}</option>
-                                ))}
-                            </select>
-                        </div>
                         <div className="form-group">
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                 <KeyboardDatePicker
@@ -183,6 +154,19 @@ class Presence extends Component {
                                 }}
                                 />
                             </MuiPickersUtilsProvider>
+                        </div>
+                        <div className="input-group mb-3">
+                            <div className="input-group-prepend">
+                                <label className="input-group-text" htmlFor="inputGroupPerson">Eleve</label>
+                            </div>
+
+                            <select className="custom-select" id="inputGroupPerson" value={this.state.personId} onChange={this.handlePersonChange}>
+
+                                <option value="">Choix...</option>
+                                {this.state.peoples.map((people) => (
+                                    <option value={people.id} key={people.id}>{people.fullname}</option>
+                                ))}
+                            </select>
                         </div>
                     </form>
                 </div>
