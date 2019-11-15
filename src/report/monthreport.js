@@ -124,6 +124,13 @@ class ReportPresence extends Component {
         return dateToFormat.getHours() + ":" + dateToFormat.getMinutes().toString().padStart(2,0);
     }
 
+
+    displayTotal(totalResult) {
+        return "Repas : " + totalResult.totalRepas +
+                " Matin : " + totalResult.totalMatin +
+                " Soir : " + totalResult.totalSoir ;
+    }
+
     isUnworkedDay(date) {
         switch (date.getDay()) {
           case 0:
@@ -136,6 +143,7 @@ class ReportPresence extends Component {
     }
 
     render() {
+        var totalRepas = 0;
         return (
             <div style={{marginTop: 10}}>
                 <h3>Rapport Mensuel</h3>
@@ -172,6 +180,7 @@ class ReportPresence extends Component {
                          {(this.getDaysInMonth(this.state.selectedDate)).map((dayInMonth) => (
                             <th className={this.isUnworkedDay(dayInMonth)} key={dayInMonth.getTime()}>{dayInMonth.getDate()}</th>
                          ))}
+                         <th>Total</th>
                      </tr>
                 </thead>
                 <tbody>
@@ -196,6 +205,55 @@ class ReportPresence extends Component {
                                         )}
                                      </td>
                             ))}
+                            <td>{
+                                this.displayTotal(
+                                    this.state.presences
+                                    .filter((presence) => (people.id === presence.personId))
+                                    .filter((presence) => (this.state.selectedDate.getFullYear() === new Date(presence.presenceDay).getFullYear()
+                                                            && this.state.selectedDate.getMonth() === new Date(presence.presenceDay).getMonth()))
+                                    .reduce(function(currentSum, presence)
+                                            {
+                                                // Somme nombre de repas
+                                                if (presence.hasMeal) {
+                                                    currentSum.totalRepas = currentSum.totalRepas + 1;
+                                                }
+
+                                                // Somme heures du matin
+                                                var baseMorning = new Date(presence.arrival);
+
+                                                baseMorning.setHours(8);
+                                                baseMorning.setMinutes(30);
+                                                baseMorning.setSeconds(0);
+                                                baseMorning.setMilliseconds(0);
+
+                                                if(presence.arrival < baseMorning) {
+                                                    console.log("difference matin => ", baseMorning - presence.arrival);
+                                                    currentSum.totalMatin = currentSum.totalMatin + ((baseMorning - presence.arrival)/60000);
+                                                }
+
+                                                // Somme heures du soir
+                                                var baseEvening = new Date(presence.departure);
+
+                                                baseEvening.setHours(16);
+                                                baseEvening.setMinutes(30);
+                                                baseEvening.setSeconds(0);
+                                                baseEvening.setMilliseconds(0);
+
+                                                console.log("presence.arrival => ", presence.departure);
+                                                if(baseEvening < presence.departure) {
+                                                    console.log("difference soir => ", presence.departure - baseEvening);
+                                                    currentSum.totalSoir = currentSum.totalSoir + ((presence.departure - baseEvening)/60000);
+                                                }
+
+                                                return currentSum;
+                                            }, {
+                                                   totalRepas: 0,
+                                                   totalMatin: 0,
+                                                   totalSoir:  0
+                                               }
+                                    )
+                                )
+                            }</td>
                          </tr>
                     ))}
 
