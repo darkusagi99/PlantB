@@ -92,10 +92,11 @@ class InitDay extends Component {
     onSubmit(e) {
         e.preventDefault();
 
-        var peoples = [];
+        var peoples = this.state.peoples;
         var presenceList = [];
 
         var currentDateId = this.getDayId(this.state.selectedDate);
+        var currentDate = this.state.selectedDate;
 
         // Récupération du nom du jour
         var days = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
@@ -113,49 +114,66 @@ class InitDay extends Component {
         .get()
         .then(function(doc) {
 
-            // CHargement des présences existantes
-            presenceList = doc.data().presences;
+            if(!doc.empty) {
 
-            // Génération des présences manquantes
-            peoples.forEach(function(person) {
-
-                // Recherche si la présence existe déjà
-                if(!presenceList.includes(person.id)) {
-                    // Si ce n'est pas le cas, création de celle-ci et ajout dans la liste
-                    var currentMeal = false;
-                    var currentArrival = that.state.baseArrivalTime;
-                    var currentDeparture = that.state.baseDepartureTime;
-
-                    if (person.standardArrival.includes(dayName)) {
-                        currentArrival = that.state.arrivalTime;
-                    }
-
-                    if (person.standardDeparture.includes(dayName)) {
-                        currentDeparture = that.state.depatureTime;
-                    }
-
-                    if (person.standardMeal.includes(dayName)) {
-                        currentMeal = true;
-                    }
-
-
-                    that.presenceRef.add({
-                        personId : person.id,
-                        presenceDay : that.state.selectedDate,
-                        arrival : currentArrival,
-                        departure : currentDeparture,
-                        hasMeal : currentMeal
-                    })
-                    .then((docRef) => {
-                        that.props.history.push("/presence/list")
-                    })
-                    .catch((error) => {
-                        console.error("Error adding document: ", error);
-                    });
-
+                // CHargement des présences existantes
+                if (doc.data() !== undefined) {
+                    presenceList = doc.data().presences;
+                } else {
+                    presenceList = [];
                 }
 
-            });
+                // Génération des présences manquantes
+                peoples.forEach(function(person) {
+
+
+                    // Recherche si la présence existe déjà
+                    if(!presenceList.includes(person.id)) {
+                        // Si ce n'est pas le cas, création de celle-ci et ajout dans la liste
+                        var currentMeal = false;
+                        var currentArrival = that.state.baseArrivalTime;
+                        var currentDeparture = that.state.baseDepartureTime;
+
+                        if (person.standardArrival.includes(dayName)) {
+                            currentArrival = that.state.arrivalTime;
+                        }
+
+                        if (person.standardDeparture.includes(dayName)) {
+                            currentDeparture = that.state.depatureTime;
+                        }
+
+                        if (person.standardMeal.includes(dayName)) {
+                            currentMeal = true;
+                        }
+
+
+                        presenceList.push({
+                            personId : person.id,
+                            presenceDay : that.state.selectedDate,
+                            arrival : currentArrival,
+                            departure : currentDeparture,
+                            hasMeal : currentMeal
+                        });
+
+                    }
+
+                });
+
+                const JourneeToSave = {
+                    presences : presenceList,
+                    day : currentDate.getDate(),
+                    month : currentDate.getMonth(),
+                    year : currentDate.getFullYear()
+                }
+
+
+                console.log("JourneeToSave =>",  JourneeToSave);
+
+                that.journeeRef.doc(currentDateId).set(JourneeToSave)
+                        .then(that.props.history.push(`/presence/list`))
+                        .catch(error => {console.log(error);});
+
+            }
 
         });
 
