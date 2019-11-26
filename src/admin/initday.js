@@ -95,6 +95,8 @@ class InitDay extends Component {
         var peoples = this.state.peoples;
         var presenceList = [];
 
+        var presenceListIds = [];
+
         var currentDateId = this.getDayId(this.state.selectedDate);
         var currentDate = this.state.selectedDate;
 
@@ -116,6 +118,9 @@ class InitDay extends Component {
 
             if(!doc.empty) {
 
+
+                console.log("CurrentDay =>",  doc);
+
                 // CHargement des présences existantes
                 if (doc.data() !== undefined) {
                     presenceList = doc.data().presences;
@@ -123,12 +128,19 @@ class InitDay extends Component {
                     presenceList = [];
                 }
 
+                presenceListIds = presenceList.map((currentPresence) => (
+                        currentPresence.personId
+                ))
+
+                console.log("CurrentDay - presenceList =>",  presenceList);
+                console.log("CurrentDay - presenceListIds =>",  presenceListIds);
+
                 // Génération des présences manquantes
                 peoples.forEach(function(person) {
 
 
                     // Recherche si la présence existe déjà
-                    if(!presenceList.includes(person.id)) {
+                    if(!presenceListIds.includes(person.id)) {
                         // Si ce n'est pas le cas, création de celle-ci et ajout dans la liste
                         var currentMeal = false;
                         var currentArrival = that.state.baseArrivalTime;
