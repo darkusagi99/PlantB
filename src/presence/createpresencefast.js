@@ -121,7 +121,7 @@ class CreateFastPresence extends Component {
         console.log("currentPersonIndex : ", currentPresenceIndex);
 
         // doc.data() is never undefined for query doc snapshots
-        if (currentPresenceIndex != -1) {
+        if (currentPresenceIndex !== -1) {
 
             this.setState({
                 presenceIndex : currentPresenceIndex,
@@ -168,8 +168,6 @@ class CreateFastPresence extends Component {
     }
 
     handlePersonChange = e => {
-
-        var that = this;
 
         console.log("targetValue : ", e.target.value);
 
@@ -263,7 +261,7 @@ class CreateFastPresence extends Component {
             hasMeal : this.state.hasMeal
         }
 
-        if (this.state.presenceIndex == -1) {
+        if (this.state.presenceIndex === -1) {
 
             presenceList.push(newPresence);
 
