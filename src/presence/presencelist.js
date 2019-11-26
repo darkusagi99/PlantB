@@ -51,7 +51,6 @@ class Presence extends Component {
 
     handlePersonChange = e => {
 
-        var that = this;
         var selectedpresences = this.state.alldaypresences.filter((presence) => (e.target.value === presence.personId));
 
         this.setState({
@@ -64,7 +63,6 @@ class Presence extends Component {
     handleDateChange = date => {
 
         var that = this;
-        var newPresence = [];
         var currentDateId = this.getDayId(date);
         var currentPresenceList = [];
         var currentPresenceToShow = [];
@@ -76,8 +74,6 @@ class Presence extends Component {
 
         console.log("SearchDate => ", currentDateId);
 
-        var presenceRefPerson;
-
         this.journeeRef.doc(currentDateId)
         .get()
         .then(function(doc) {
@@ -86,7 +82,7 @@ class Presence extends Component {
                 currentPresenceList = doc.data().presences;
                 currentPresenceToShow = currentPresenceList;
                 // Filtre de la date voulue
-                if (that.state.selectedPersonId != '') {
+                if (that.state.selectedPersonId !== '') {
                     currentPresenceToShow = currentPresenceList.filter((presence) => (that.state.selectedPersonId === presence.personId));
                 }
 

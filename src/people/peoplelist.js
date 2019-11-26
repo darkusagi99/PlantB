@@ -22,15 +22,12 @@ class People extends Component {
         if (this.props.location.pathname === '/people/refresh') {
 
             console.log("Detection action");
-            var newPeople = [];
             var that = this;
 
             // Chargement des personnes
             this.peopleListRef.get()
             .then(function(doc) {
                 // doc.data() is never undefined for query doc snapshots
-                var currentData = doc.data();
-
                 console.log("Personne App", doc.id, " => ", doc.data());
 
 

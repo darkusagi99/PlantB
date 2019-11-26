@@ -183,10 +183,10 @@ class ReportPresence extends Component {
                             <td>{people.fullname}</td>
                             {(this.getDaysInMonth(this.state.selectedDate)).map((dayInMonth) => (
                                      <td className={this.isUnworkedDay(dayInMonth)} key={dayInMonth.getTime()}>{this.state.presences
-                                        .filter((presence) => (people.id == presence.personId))
+                                        .filter((presence) => (people.id === presence.personId))
                                         .filter((presence) => (dayInMonth.getFullYear() === new Date(presence.presenceDay.seconds*1000).getFullYear()
                                                                 && dayInMonth.getMonth() === new Date(presence.presenceDay.seconds*1000).getMonth()
-                                                                && dayInMonth.getDate() == new Date(presence.presenceDay.seconds*1000).getDate()
+                                                                && dayInMonth.getDate() === new Date(presence.presenceDay.seconds*1000).getDate()
                                                                 ))
                                         .map((presence) => (
                                                 <p key={people.id + presence.presenceDay.seconds}>
